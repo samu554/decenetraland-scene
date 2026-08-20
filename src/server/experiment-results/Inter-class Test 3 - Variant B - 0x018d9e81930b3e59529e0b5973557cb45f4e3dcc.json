@@ -1,0 +1,76 @@
+[
+  {
+    "runId": "inter-test-3-b_1785604092200_0x018d9e8193",
+    "address": "0x018d9e81930b3e59529e0b5973557cb45f4e3dcc",
+    "testId": "inter-test-3-b",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "3B",
+    "graphCombination": [
+      "bar-chart"
+    ],
+    "scenarioId": "gradual_improvement_no_anomaly",
+    "scenarioLabel": "Gradual improvement - no anomaly",
+    "expectedAnswer": "gradual-improvement",
+    "selectedAnswer": "gradual-improvement",
+    "isScenarioCorrect": true,
+    "expectedAnomaly": "none",
+    "selectedAnomaly": "early",
+    "isAnomalyCorrect": false,
+    "anomalyDescription": "No isolated anomaly; the relevant pattern is gradual improvement with normal fluctuations.",
+    "isCorrect": true,
+    "accuracyType": "wrong",
+    "playbackStartedAtClientMs": 1785604094879,
+    "answerShownAtClientMs": 1785604135777,
+    "answeredAtClientMs": 1785604146357,
+    "observationTimeMs": 40898,
+    "responseTimeMs": 10580,
+    "totalPoints": 80,
+    "createdAtClient": "2026-08-01T17:09:06.357Z",
+    "createdAtServer": "2026-08-01T17:09:06.443Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-3-b_1785604092200_0x018d9e8193",
+    "address": "0x018d9e81930b3e59529e0b5973557cb45f4e3dcc",
+    "testId": "inter-test-3-b",
+    "testNumber": 3,
+    "variant": "B",
+    "caseId": "3B",
+    "graphCombination": [
+      "bar-chart"
+    ],
+    "scenarioId": "gradual_improvement_no_anomaly",
+    "scenarioLabel": "Gradual improvement - no anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T3-B1",
+        "text": "I clearly understood whether the sentiment was improving, worsening, or staying stable."
+      },
+      {
+        "code": "T3-B2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T3-B3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T3-B1": 4,
+      "T3-B2": 5,
+      "T3-B3": 5
+    },
+    "startedAtClientMs": 1785604146357,
+    "answeredAtClientMs": 1785604155711,
+    "responseTimeMs": 9354,
+    "createdAtClient": "2026-08-01T17:09:15.711Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-01T17:09:15.800Z"
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "responseType": "inter-class-likert-comparative",
+    "runId": "inter-test-2-final-likert_1785603956524_0x018d9e8193",
+    "address": "0x018d9e81930b3e59529e0b5973557cb45f4e3dcc",
+    "testId": "inter-test-2-final-likert",
+    "testNumber": 2,
+    "likertMode": "comparative",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T2-C1",
+        "text": "In terms of understanding the dominant sentiment, Variant A is better than Variant B."
+      },
+      {
+        "code": "T2-C2",
+        "text": "In terms of distinguishing a neutral conversation from a polarized one, Variant A is better than Variant B."
+      },
+      {
+        "code": "T2-C3",
+        "text": "In terms of understanding the conversation quickly without too much visual information, Variant A is better than Variant B."
+      }
+    ],
+    "answers": {
+      "T2-C1": 4,
+      "T2-C2": 3,
+      "T2-C3": 4
+    },
+    "comparisonGraphCombinationLabels": {
+      "variantA": [
+        "Sentiment image",
+        "Temporal bar chart"
+      ],
+      "variantB": [
+        "3-color donut",
+        "Temporal bar chart"
+      ]
+    },
+    "startedAtClientMs": 1785603956524,
+    "answeredAtClientMs": 1785603986657,
+    "responseTimeMs": 30133,
+    "createdAtClient": "2026-08-01T17:06:26.657Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-01T17:06:26.735Z"
+  }
+]

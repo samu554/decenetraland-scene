@@ -1,0 +1,76 @@
+[
+  {
+    "runId": "inter-test-3-b_1785492173031_0x007e6a17e5",
+    "address": "0x007e6a17e57b1435a754823b5dc509c9e36aeb7a",
+    "testId": "inter-test-3-b",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "3B",
+    "graphCombination": [
+      "bar-chart"
+    ],
+    "scenarioId": "sudden_drop_no_anomaly",
+    "scenarioLabel": "Sudden drop - no anomaly",
+    "expectedAnswer": "sudden-drop",
+    "selectedAnswer": "sudden-drop",
+    "isScenarioCorrect": true,
+    "expectedAnomaly": "none",
+    "selectedAnomaly": "late",
+    "isAnomalyCorrect": false,
+    "anomalyDescription": "No isolated anomaly; the relevant pattern is a sustained drop from positive to negative sentiment.",
+    "isCorrect": true,
+    "accuracyType": "wrong",
+    "playbackStartedAtClientMs": 1785492175138,
+    "answerShownAtClientMs": 1785492216503,
+    "answeredAtClientMs": 1785492228558,
+    "observationTimeMs": 41365,
+    "responseTimeMs": 12055,
+    "totalPoints": 80,
+    "createdAtClient": "2026-07-31T10:03:48.558Z",
+    "createdAtServer": "2026-07-31T10:03:49.203Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-3-b_1785492173031_0x007e6a17e5",
+    "address": "0x007e6a17e57b1435a754823b5dc509c9e36aeb7a",
+    "testId": "inter-test-3-b",
+    "testNumber": 3,
+    "variant": "B",
+    "caseId": "3B",
+    "graphCombination": [
+      "bar-chart"
+    ],
+    "scenarioId": "sudden_drop_no_anomaly",
+    "scenarioLabel": "Sudden drop - no anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T3-B1",
+        "text": "I clearly understood whether the sentiment was improving, worsening, or staying stable."
+      },
+      {
+        "code": "T3-B2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T3-B3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T3-B1": 4,
+      "T3-B2": 4,
+      "T3-B3": 4
+    },
+    "startedAtClientMs": 1785492228558,
+    "answeredAtClientMs": 1785492237726,
+    "responseTimeMs": 9168,
+    "createdAtClient": "2026-07-31T10:03:57.726Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-07-31T10:03:58.386Z"
+  }
+]

@@ -1,0 +1,76 @@
+[
+  {
+    "runId": "inter-test-3-b_1786714724270_0xdf68b39d72",
+    "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+    "testId": "inter-test-3-b",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "3B",
+    "graphCombination": [
+      "bar-chart"
+    ],
+    "scenarioId": "polarized_no_anomaly",
+    "scenarioLabel": "Polarized - no anomaly",
+    "expectedAnswer": "polarized",
+    "selectedAnswer": "polarized",
+    "isScenarioCorrect": true,
+    "expectedAnomaly": "none",
+    "selectedAnomaly": "middle",
+    "isAnomalyCorrect": false,
+    "anomalyDescription": "No isolated anomaly; the relevant pattern is persistent polarization and disagreement.",
+    "isCorrect": true,
+    "accuracyType": "wrong",
+    "playbackStartedAtClientMs": 1786714729528,
+    "answerShownAtClientMs": 1786714769771,
+    "answeredAtClientMs": 1786714856366,
+    "observationTimeMs": 40243,
+    "responseTimeMs": 86595,
+    "totalPoints": 80,
+    "createdAtClient": "2026-08-14T13:40:56.366Z",
+    "createdAtServer": "2026-08-14T13:40:57.428Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-3-b_1786714724270_0xdf68b39d72",
+    "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+    "testId": "inter-test-3-b",
+    "testNumber": 3,
+    "variant": "B",
+    "caseId": "3B",
+    "graphCombination": [
+      "bar-chart"
+    ],
+    "scenarioId": "polarized_no_anomaly",
+    "scenarioLabel": "Polarized - no anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T3-B1",
+        "text": "I clearly understood whether the sentiment was improving, worsening, or staying stable."
+      },
+      {
+        "code": "T3-B2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T3-B3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T3-B1": 4,
+      "T3-B2": 5,
+      "T3-B3": 5
+    },
+    "startedAtClientMs": 1786714856366,
+    "answeredAtClientMs": 1786714864110,
+    "responseTimeMs": 7744,
+    "createdAtClient": "2026-08-14T13:41:04.110Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-14T13:41:05.208Z"
+  }
+]

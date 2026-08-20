@@ -1,0 +1,882 @@
+[
+  {
+    "id": 1,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 2,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 3,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 4,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 5,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 6,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 7,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 8,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 9,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 10,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 11,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 12,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 13,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 14,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 15,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 16,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 17,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 18,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 19,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 20,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 21,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 22,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 23,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 24,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 25,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 26,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 27,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 28,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 29,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 30,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 31,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 32,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 33,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 34,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 35,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 36,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 37,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 38,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 39,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 40,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 41,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 42,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 43,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 44,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 45,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 46,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 47,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 48,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 49,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 50,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 51,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 52,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 53,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 54,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 55,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 56,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 57,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 58,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 59,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 60,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 61,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 62,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 63,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 64,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 65,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 66,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 67,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 68,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 69,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 70,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 71,
+    "value": 5.1,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "positive",
+      "positive"
+    ]
+  },
+  {
+    "id": 72,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 73,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 74,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 75,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 76,
+    "value": 4.9,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 77,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 78,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 79,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  },
+  {
+    "id": 80,
+    "value": 5.0,
+    "labels": [
+      "neutral",
+      "neutral",
+      "neutral",
+      "negative",
+      "positive"
+    ]
+  }
+]

@@ -1,0 +1,150 @@
+{
+  "runId": "cat1-test-1-1_1785592589644_0x92e368a3ab",
+  "address": "0x92e368a3ab1eb639b7898703d165175bb7a39941",
+  "testId": "cat1-test-1-1",
+  "totalTrials": 20,
+  "trials": [
+    {
+      "trialIndex": 1,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment bar",
+      "value": 9,
+      "expectedLabel": "Great"
+    },
+    {
+      "trialIndex": 2,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 7,
+      "expectedLabel": "Good"
+    },
+    {
+      "trialIndex": 3,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment bar",
+      "value": 1,
+      "expectedLabel": "Awful"
+    },
+    {
+      "trialIndex": 4,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment bar",
+      "value": 7,
+      "expectedLabel": "Good"
+    },
+    {
+      "trialIndex": 5,
+      "graph": "sentiment-light",
+      "graphLabel": "Sentiment light",
+      "value": 3,
+      "expectedLabel": "Bad"
+    },
+    {
+      "trialIndex": 6,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment bar",
+      "value": 3,
+      "expectedLabel": "Bad"
+    },
+    {
+      "trialIndex": 7,
+      "graph": "sentiment-image",
+      "graphLabel": "Sentiment emoji",
+      "value": 9,
+      "expectedLabel": "Great"
+    },
+    {
+      "trialIndex": 8,
+      "graph": "sentiment-light",
+      "graphLabel": "Sentiment light",
+      "value": 7,
+      "expectedLabel": "Good"
+    },
+    {
+      "trialIndex": 9,
+      "graph": "sentiment-image",
+      "graphLabel": "Sentiment emoji",
+      "value": 1,
+      "expectedLabel": "Awful"
+    },
+    {
+      "trialIndex": 10,
+      "graph": "sentiment-image",
+      "graphLabel": "Sentiment emoji",
+      "value": 5,
+      "expectedLabel": "Neutral"
+    },
+    {
+      "trialIndex": 11,
+      "graph": "sentiment-image",
+      "graphLabel": "Sentiment emoji",
+      "value": 7,
+      "expectedLabel": "Good"
+    },
+    {
+      "trialIndex": 12,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment bar",
+      "value": 5,
+      "expectedLabel": "Neutral"
+    },
+    {
+      "trialIndex": 13,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 9,
+      "expectedLabel": "Great"
+    },
+    {
+      "trialIndex": 14,
+      "graph": "sentiment-image",
+      "graphLabel": "Sentiment emoji",
+      "value": 3,
+      "expectedLabel": "Bad"
+    },
+    {
+      "trialIndex": 15,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 3,
+      "expectedLabel": "Bad"
+    },
+    {
+      "trialIndex": 16,
+      "graph": "sentiment-light",
+      "graphLabel": "Sentiment light",
+      "value": 5,
+      "expectedLabel": "Neutral"
+    },
+    {
+      "trialIndex": 17,
+      "graph": "sentiment-light",
+      "graphLabel": "Sentiment light",
+      "value": 1,
+      "expectedLabel": "Awful"
+    },
+    {
+      "trialIndex": 18,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 5,
+      "expectedLabel": "Neutral"
+    },
+    {
+      "trialIndex": 19,
+      "graph": "sentiment-light",
+      "graphLabel": "Sentiment light",
+      "value": 9,
+      "expectedLabel": "Great"
+    },
+    {
+      "trialIndex": 20,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 1,
+      "expectedLabel": "Awful"
+    }
+  ],
+  "createdAtClient": "2026-08-01T13:56:29.645Z",
+  "createdAtServer": "2026-08-01T13:56:29.734Z"
+}

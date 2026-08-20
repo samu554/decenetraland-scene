@@ -1,0 +1,78 @@
+[
+  {
+    "runId": "inter-test-3-a_1786714653662_0xdf68b39d72",
+    "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+    "testId": "inter-test-3-a",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "3A",
+    "graphCombination": [
+      "sentiment-meter",
+      "tricolor-donut"
+    ],
+    "scenarioId": "stable_positive_no_anomaly",
+    "scenarioLabel": "Stable positive - no anomaly",
+    "expectedAnswer": "stable-positive",
+    "selectedAnswer": "stable-positive",
+    "isScenarioCorrect": true,
+    "expectedAnomaly": "none",
+    "selectedAnomaly": "none",
+    "isAnomalyCorrect": true,
+    "anomalyDescription": "No isolated anomaly; the conversation remains consistently positive with normal fluctuations.",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "playbackStartedAtClientMs": 1786714655297,
+    "answerShownAtClientMs": 1786714695790,
+    "answeredAtClientMs": 1786714702484,
+    "observationTimeMs": 40493,
+    "responseTimeMs": 6694,
+    "totalPoints": 80,
+    "createdAtClient": "2026-08-14T13:38:22.485Z",
+    "createdAtServer": "2026-08-14T13:38:23.570Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-3-a_1786714653662_0xdf68b39d72",
+    "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+    "testId": "inter-test-3-a",
+    "testNumber": 3,
+    "variant": "A",
+    "caseId": "3A",
+    "graphCombination": [
+      "sentiment-meter",
+      "tricolor-donut"
+    ],
+    "scenarioId": "stable_positive_no_anomaly",
+    "scenarioLabel": "Stable positive - no anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T3-A1",
+        "text": "I clearly understood whether the sentiment was improving, worsening, or staying stable."
+      },
+      {
+        "code": "T3-A2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T3-A3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T3-A1": 3,
+      "T3-A2": 3,
+      "T3-A3": 5
+    },
+    "startedAtClientMs": 1786714702485,
+    "answeredAtClientMs": 1786714717506,
+    "responseTimeMs": 15021,
+    "createdAtClient": "2026-08-14T13:38:37.506Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-14T13:38:38.598Z"
+  }
+]

@@ -1,0 +1,70 @@
+{
+  "runId": "cat2-composition_1786712738887_0xdf68b39d72",
+  "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+  "testId": "cat2-composition",
+  "totalTrials": 6,
+  "trials": [
+    {
+      "trialIndex": 1,
+      "graph": "tricolor-donut",
+      "graphLabel": "Tricolor donut",
+      "negativePercent": 80,
+      "neutralPercent": 10,
+      "positivePercent": 10,
+      "expectedDominant": "negative",
+      "expectedLabel": "negative"
+    },
+    {
+      "trialIndex": 2,
+      "graph": "tricolor-donut",
+      "graphLabel": "Tricolor donut",
+      "negativePercent": 10,
+      "neutralPercent": 80,
+      "positivePercent": 10,
+      "expectedDominant": "neutral",
+      "expectedLabel": "neutral"
+    },
+    {
+      "trialIndex": 3,
+      "graph": "tricolor-donut",
+      "graphLabel": "Tricolor donut",
+      "negativePercent": 10,
+      "neutralPercent": 10,
+      "positivePercent": 80,
+      "expectedDominant": "positive",
+      "expectedLabel": "positive"
+    },
+    {
+      "trialIndex": 4,
+      "graph": "tricolor-donut",
+      "graphLabel": "Tricolor donut",
+      "negativePercent": 10,
+      "neutralPercent": 30,
+      "positivePercent": 60,
+      "expectedDominant": "positive",
+      "expectedLabel": "positive"
+    },
+    {
+      "trialIndex": 5,
+      "graph": "tricolor-donut",
+      "graphLabel": "Tricolor donut",
+      "negativePercent": 20,
+      "neutralPercent": 40,
+      "positivePercent": 40,
+      "expectedDominant": "unclear",
+      "expectedLabel": "unclear"
+    },
+    {
+      "trialIndex": 6,
+      "graph": "tricolor-donut",
+      "graphLabel": "Tricolor donut",
+      "negativePercent": 33,
+      "neutralPercent": 33,
+      "positivePercent": 33,
+      "expectedDominant": "unclear",
+      "expectedLabel": "unclear"
+    }
+  ],
+  "createdAtClient": "2026-08-14T13:05:38.887Z",
+  "createdAtServer": "2026-08-14T13:05:39.980Z"
+}

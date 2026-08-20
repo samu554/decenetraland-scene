@@ -1,0 +1,107 @@
+{
+  "runId": "cat3-test-3-1_1785602720062_0x018d9e8193",
+  "address": "0x018d9e81930b3e59529e0b5973557cb45f4e3dcc",
+  "testId": "cat3-test-3-1",
+  "clientTestId": "test-3-1",
+  "totalTrials": 12,
+  "trials": [
+    {
+      "kind": "estimation",
+      "trialIndex": 1,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment meter",
+      "value": 7.4,
+      "expectedValue": 7.4
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 2,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 7.4,
+      "expectedValue": 7.4
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 3,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 1.2,
+      "expectedValue": 1.2
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 4,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment meter",
+      "value": 9,
+      "expectedValue": 9
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 5,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment meter",
+      "value": 1.2,
+      "expectedValue": 1.2
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 6,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment meter",
+      "value": 4.1,
+      "expectedValue": 4.1
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 7,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 2.6,
+      "expectedValue": 2.6
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 8,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 5.8,
+      "expectedValue": 5.8
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 9,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment meter",
+      "value": 2.6,
+      "expectedValue": 2.6
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 10,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 4.1,
+      "expectedValue": 4.1
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 11,
+      "graph": "sentiment-meter",
+      "graphLabel": "Sentiment meter",
+      "value": 5.8,
+      "expectedValue": 5.8
+    },
+    {
+      "kind": "estimation",
+      "trialIndex": 12,
+      "graph": "simple-donut",
+      "graphLabel": "Simple donut",
+      "value": 9,
+      "expectedValue": 9
+    }
+  ],
+  "createdAtClient": "2026-08-01T16:45:20.062Z",
+  "createdAtServer": "2026-08-01T16:45:20.136Z"
+}

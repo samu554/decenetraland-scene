@@ -1,0 +1,78 @@
+[
+  {
+    "runId": "inter-test-1-a_1785603285007_0x018d9e8193",
+    "address": "0x018d9e81930b3e59529e0b5973557cb45f4e3dcc",
+    "testId": "inter-test-1-a",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "1A",
+    "graphCombination": [
+      "sentiment-image",
+      "bar-chart"
+    ],
+    "scenarioId": "polarized_no_anomaly",
+    "scenarioLabel": "Polarized - no anomaly",
+    "expectedAnswer": "polarized",
+    "selectedAnswer": "stable-positive",
+    "isScenarioCorrect": false,
+    "expectedAnomaly": "none",
+    "selectedAnomaly": "none",
+    "isAnomalyCorrect": true,
+    "anomalyDescription": "No isolated anomaly; the relevant pattern is persistent polarization and disagreement.",
+    "isCorrect": true,
+    "accuracyType": "wrong",
+    "playbackStartedAtClientMs": 1785603290714,
+    "answerShownAtClientMs": 1785603331770,
+    "answeredAtClientMs": 1785603443218,
+    "observationTimeMs": 41056,
+    "responseTimeMs": 111448,
+    "totalPoints": 80,
+    "createdAtClient": "2026-08-01T16:57:23.218Z",
+    "createdAtServer": "2026-08-01T16:57:23.303Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-1-a_1785603285007_0x018d9e8193",
+    "address": "0x018d9e81930b3e59529e0b5973557cb45f4e3dcc",
+    "testId": "inter-test-1-a",
+    "testNumber": 1,
+    "variant": "A",
+    "caseId": "1A",
+    "graphCombination": [
+      "sentiment-image",
+      "bar-chart"
+    ],
+    "scenarioId": "polarized_no_anomaly",
+    "scenarioLabel": "Polarized - no anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T1-A1",
+        "text": "I clearly understood the current sentiment value."
+      },
+      {
+        "code": "T1-A2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T1-A3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T1-A1": 4,
+      "T1-A2": 5,
+      "T1-A3": 5
+    },
+    "startedAtClientMs": 1785603443218,
+    "answeredAtClientMs": 1785603509303,
+    "responseTimeMs": 66085,
+    "createdAtClient": "2026-08-01T16:58:29.303Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-01T16:58:29.414Z"
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "runId": "inter-test-2-b_1786964271713_0x04cce0fee5",
+    "address": "0x04cce0fee51228825e80d077d5150005e9c29bfa",
+    "testId": "inter-test-2-b",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "2B",
+    "graphCombination": [
+      "tricolor-donut",
+      "bar-chart"
+    ],
+    "scenarioId": "polarized_with_anomaly",
+    "scenarioLabel": "Polarized - with anomaly",
+    "expectedAnswer": "polarized",
+    "selectedAnswer": "polarized",
+    "isScenarioCorrect": true,
+    "expectedAnomaly": "middle",
+    "selectedAnomaly": "none",
+    "isAnomalyCorrect": false,
+    "anomalyDescription": "A short unusually positive consensus appears in the middle of an otherwise polarized conversation.",
+    "isCorrect": true,
+    "accuracyType": "wrong",
+    "playbackStartedAtClientMs": 1786964273221,
+    "answerShownAtClientMs": 1786964314975,
+    "answeredAtClientMs": 1786964339900,
+    "observationTimeMs": 41754,
+    "responseTimeMs": 24925,
+    "totalPoints": 80,
+    "createdAtClient": "2026-08-17T10:58:59.900Z",
+    "createdAtServer": "2026-08-17T10:59:00.661Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-2-b_1786964271713_0x04cce0fee5",
+    "address": "0x04cce0fee51228825e80d077d5150005e9c29bfa",
+    "testId": "inter-test-2-b",
+    "testNumber": 2,
+    "variant": "B",
+    "caseId": "2B",
+    "graphCombination": [
+      "tricolor-donut",
+      "bar-chart"
+    ],
+    "scenarioId": "polarized_with_anomaly",
+    "scenarioLabel": "Polarized - with anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T2-B1",
+        "text": "I clearly understood the composition of positive, neutral, and negative messages."
+      },
+      {
+        "code": "T2-B2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T2-B3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T2-B1": 3,
+      "T2-B2": 4,
+      "T2-B3": 3
+    },
+    "startedAtClientMs": 1786964339900,
+    "answeredAtClientMs": 1786964360292,
+    "responseTimeMs": 20392,
+    "createdAtClient": "2026-08-17T10:59:20.293Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-17T10:59:21.086Z"
+  }
+]

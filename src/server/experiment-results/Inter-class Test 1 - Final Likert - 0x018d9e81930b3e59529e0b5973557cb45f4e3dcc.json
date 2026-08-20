@@ -1,0 +1,47 @@
+[
+  {
+    "responseType": "inter-class-likert-comparative",
+    "runId": "inter-test-1-final-likert_1785603626081_0x018d9e8193",
+    "address": "0x018d9e81930b3e59529e0b5973557cb45f4e3dcc",
+    "testId": "inter-test-1-final-likert",
+    "testNumber": 1,
+    "likertMode": "comparative",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T1-C1",
+        "text": "In terms of quickly understanding the current sentiment, Variant A is better than Variant B."
+      },
+      {
+        "code": "T1-C2",
+        "text": "In terms of precisely estimating the current sentiment value, Variant A is better than Variant B."
+      },
+      {
+        "code": "T1-C3",
+        "text": "In terms of monitoring a conversation in real time, Variant A is better than Variant B."
+      }
+    ],
+    "answers": {
+      "T1-C1": 5,
+      "T1-C2": 4,
+      "T1-C3": 5
+    },
+    "comparisonGraphCombinationLabels": {
+      "variantA": [
+        "Sentiment image",
+        "Temporal bar chart"
+      ],
+      "variantB": [
+        "Sentiment meter",
+        "Temporal bar chart"
+      ]
+    },
+    "startedAtClientMs": 1785603626081,
+    "answeredAtClientMs": 1785603687031,
+    "responseTimeMs": 60950,
+    "createdAtClient": "2026-08-01T17:01:27.031Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-01T17:01:27.164Z"
+  }
+]

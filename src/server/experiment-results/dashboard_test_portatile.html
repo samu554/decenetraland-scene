@@ -1,0 +1,1723 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard analisi test — Portatile</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f6f9;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --text: #152033;
+      --muted: #64748b;
+      --border: #dce3ec;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --series-2: #7c3aed;
+      --series-3: #0891b2;
+      --good: #15803d;
+      --warn: #b45309;
+      --bad: #b91c1c;
+      --shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --panel: #111c31;
+        --panel-soft: #17233a;
+        --text: #e7edf7;
+        --muted: #9aabc1;
+        --border: #2a3a55;
+        --accent: #60a5fa;
+        --accent-soft: #172f55;
+        --series-2: #a78bfa;
+        --series-3: #22d3ee;
+        --good: #4ade80;
+        --warn: #fbbf24;
+        --bad: #f87171;
+        --shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, input, select { font: inherit; }
+
+    .shell {
+      width: min(1440px, calc(100% - 32px));
+      margin: 24px auto 56px;
+    }
+
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3 { margin: 0; }
+    h1 { font-size: clamp(1.65rem, 2.5vw, 2.35rem); letter-spacing: -0.03em; }
+    h2 { font-size: 1.25rem; margin-bottom: 14px; }
+    h3 { font-size: 1rem; margin-bottom: 10px; }
+    p { margin: 0; }
+
+    .subtitle {
+      margin-top: 8px;
+      max-width: 820px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .privacy-badge {
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .upload-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+      gap: 16px;
+    }
+
+    .drop-zone {
+      min-height: 164px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      background: var(--panel-soft);
+      padding: 22px;
+      transition: border-color .18s ease, background .18s ease;
+    }
+
+    .drop-zone.dragging {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .drop-zone strong { display: block; margin-bottom: 7px; }
+    .helper { color: var(--muted); font-size: .88rem; line-height: 1.45; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      justify-content: center;
+    }
+
+    .button {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 9px 13px;
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+
+    .button:hover { border-color: var(--accent); }
+    .button:active { transform: translateY(1px); }
+    .button.primary { background: var(--accent); color: white; border-color: var(--accent); }
+    .button.danger { color: var(--bad); }
+    .button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .file-list {
+      display: grid;
+      gap: 8px;
+      max-height: 230px;
+      overflow: auto;
+      margin-top: 12px;
+    }
+
+    .file-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 10px;
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: .86rem;
+    }
+
+    .file-row span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-size { color: var(--muted); white-space: nowrap; }
+
+    .status-box {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .status-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .status-line:last-child { border-bottom: 0; }
+    .status-line span { color: var(--muted); }
+    .status-line strong { text-align: right; }
+
+    .filters {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
+      gap: 12px;
+      align-items: end;
+    }
+
+    label.control {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    select, input[type="search"] {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 10px;
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin: 18px 0 14px;
+      padding-bottom: 2px;
+    }
+
+    .tab-button {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 9px 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab-button.active {
+      color: white;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 96px;
+    }
+
+    .metric-label { color: var(--muted); font-size: .82rem; }
+    .metric-value { margin-top: 7px; font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; }
+    .metric-note { margin-top: 4px; color: var(--muted); font-size: .78rem; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .section-gap { margin-top: 16px; }
+
+    .chart {
+      display: grid;
+      gap: 12px;
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: minmax(130px, 210px) minmax(0, 1fr) 66px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .chart-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: .86rem;
+    }
+
+    .bar-track {
+      position: relative;
+      height: 14px;
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      min-width: 2px;
+      border-radius: inherit;
+      background: var(--accent);
+    }
+
+    .bar-fill.series-2 { background: var(--series-2); }
+    .bar-fill.series-3 { background: var(--series-3); }
+    .bar-fill.bad { background: var(--bad); }
+    .bar-value { text-align: right; font-variant-numeric: tabular-nums; font-size: .84rem; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted);
+      font-size: .8rem;
+      margin-bottom: 12px;
+    }
+
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+    .legend-dot.series-2 { background: var(--series-2); }
+    .legend-dot.series-3 { background: var(--series-3); }
+
+    .group-chart-row {
+      display: grid;
+      grid-template-columns: minmax(135px, 210px) minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .group-bars { display: grid; gap: 6px; }
+    .mini-bar { display: grid; grid-template-columns: 74px minmax(0, 1fr) 56px; gap: 8px; align-items: center; }
+    .mini-label { font-size: .76rem; color: var(--muted); }
+
+    .table-wrap {
+      width: 100%;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+      background: var(--panel);
+      font-size: .84rem;
+    }
+
+    th, td {
+      padding: 10px 11px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--panel-soft);
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+    td.number, th.number { text-align: right; font-variant-numeric: tabular-nums; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: .75rem;
+      background: var(--accent-soft);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .badge.good { color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
+    .badge.warn { color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); }
+    .badge.bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); }
+
+    .empty {
+      padding: 28px 16px;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      text-align: center;
+      color: var(--muted);
+      background: var(--panel-soft);
+    }
+
+    .notice {
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 9px;
+      background: var(--accent-soft);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .notice.warn { border-left-color: var(--warn); }
+    .notice.bad { border-left-color: var(--bad); }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-soft);
+      padding: 10px 12px;
+    }
+
+    details + details { margin-top: 10px; }
+    summary { cursor: pointer; font-weight: 600; }
+
+    .export-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .small { font-size: .78rem; color: var(--muted); }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: .8rem;
+      text-align: center;
+    }
+
+    @media (max-width: 1100px) {
+      .metric-grid { grid-template-columns: repeat(3, minmax(130px, 1fr)); }
+      .filters { grid-template-columns: repeat(3, minmax(140px, 1fr)); }
+    }
+
+    @media (max-width: 820px) {
+      .shell { width: min(100% - 20px, 1440px); margin-top: 14px; }
+      header { display: block; }
+      .privacy-badge { display: inline-block; margin-top: 12px; }
+      .upload-grid, .two-col, .three-col { grid-template-columns: 1fr; }
+      .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .chart-row { grid-template-columns: minmax(100px, 145px) minmax(0, 1fr) 58px; }
+    }
+
+    @media (max-width: 520px) {
+      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filters { grid-template-columns: 1fr; }
+      .panel { padding: 14px; border-radius: 14px; }
+      .chart-row { grid-template-columns: 1fr 58px; }
+      .chart-label { grid-column: 1 / -1; }
+      .group-chart-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <h1>Dashboard analisi test</h1>
+        <p class="subtitle">Versione portatile per file JSON e JSONL. Tutto viene elaborato localmente nel browser, senza Python, server o installazioni.</p>
+      </div>
+      <div class="privacy-badge">Elaborazione locale · nessun invio dati</div>
+    </header>
+
+    <section class="panel upload-grid" aria-label="Caricamento dati">
+      <div>
+        <div id="dropZone" class="drop-zone">
+          <div>
+            <strong>Trascina qui i file JSON/JSONL</strong>
+            <p class="helper">Puoi includere file individuali, <code>responses.jsonl</code> e trial plan. I piani vengono ignorati come risposte e i duplicati vengono rimossi.</p>
+            <div class="actions">
+              <button id="chooseFiles" class="button primary" type="button">Seleziona file</button>
+              <button id="chooseFolder" class="button" type="button">Seleziona cartella</button>
+              <button id="clearData" class="button danger" type="button" disabled>Rimuovi tutto</button>
+            </div>
+            <input id="fileInput" type="file" accept=".json,.jsonl,application/json" multiple hidden>
+            <input id="folderInput" type="file" accept=".json,.jsonl,application/json" multiple webkitdirectory directory hidden>
+          </div>
+        </div>
+        <div id="fileList" class="file-list" aria-live="polite"></div>
+      </div>
+
+      <aside class="status-box">
+        <h2>Caricamento</h2>
+        <div class="status-line"><span>File letti</span><strong id="statusFiles">0</strong></div>
+        <div class="status-line"><span>Record riconosciuti</span><strong id="statusRecords">0</strong></div>
+        <div class="status-line"><span>Trial plan ignorati</span><strong id="statusPlans">0</strong></div>
+        <div class="status-line"><span>Duplicati rimossi</span><strong id="statusDuplicates">0</strong></div>
+        <div class="status-line"><span>Errori di lettura</span><strong id="statusErrors">0</strong></div>
+        <p id="loadMessage" class="helper">Nessun dato caricato.</p>
+      </aside>
+    </section>
+
+    <section id="filterPanel" class="panel filters" aria-label="Filtri" hidden>
+      <label class="control">Address
+        <select id="filterAddress"><option value="*">Tutti</option></select>
+      </label>
+      <label class="control">Famiglia
+        <select id="filterFamily"><option value="*">Tutte</option></select>
+      </label>
+      <label class="control">Test
+        <select id="filterTest"><option value="*">Tutti</option></select>
+      </label>
+      <label class="control">Variante
+        <select id="filterVariant"><option value="*">Tutte</option></select>
+      </label>
+      <label class="control">Grafico
+        <select id="filterGraph"><option value="*">Tutti</option></select>
+      </label>
+    </section>
+
+    <nav id="tabs" class="tabs" aria-label="Sezioni dashboard" hidden>
+      <button class="tab-button active" type="button" data-tab="overview">Panoramica</button>
+      <button class="tab-button" type="button" data-tab="graphs">Grafici</button>
+      <button class="tab-button" type="button" data-tab="interclass">Inter-classe</button>
+      <button class="tab-button" type="button" data-tab="likert">Likert</button>
+      <button class="tab-button" type="button" data-tab="participants">Partecipanti</button>
+      <button class="tab-button" type="button" data-tab="quality">Qualità ed export</button>
+    </nav>
+
+    <section id="emptyState" class="panel empty">
+      Carica almeno un file per iniziare l’analisi.
+    </section>
+
+    <section id="dashboard" hidden>
+      <div id="overview" class="tab-view active"></div>
+      <div id="graphs" class="tab-view"></div>
+      <div id="interclass" class="tab-view"></div>
+      <div id="likert" class="tab-view"></div>
+      <div id="participants" class="tab-view"></div>
+      <div id="quality" class="tab-view"></div>
+    </section>
+
+    <footer>Dashboard autonoma · HTML, CSS e JavaScript nativi</footer>
+  </main>
+
+  <script>
+    "use strict";
+
+    const TEST_LABELS = {
+      "cat1-test-1-1": "Categoria 1 · Riconoscimento etichetta",
+      "cat1-test-1-2": "Categoria 1 · Stima valore",
+      "cat2-composition": "Categoria 2 · Composizione",
+      "cat3-test-3-1": "Categoria 3 · Stima numerica",
+      "cat3-test-3-2": "Categoria 3 · Confronto tra grafici",
+      "cat4-temporal": "Categoria 4 · Andamento temporale",
+      "inter-test-1-a": "Inter-classe 1 · Variante A",
+      "inter-test-1-b": "Inter-classe 1 · Variante B",
+      "inter-test-2-a": "Inter-classe 2 · Variante A",
+      "inter-test-2-b": "Inter-classe 2 · Variante B",
+      "inter-test-3-a": "Inter-classe 3 · Variante A",
+      "inter-test-3-b": "Inter-classe 3 · Variante B",
+      "inter-test-1-final-likert": "Inter-classe 1 · Likert finale",
+      "inter-test-2-final-likert": "Inter-classe 2 · Likert finale",
+      "inter-test-3-final-likert": "Inter-classe 3 · Likert finale"
+    };
+
+    const state = {
+      files: [],
+      objective: [],
+      likert: [],
+      unknown: [],
+      report: emptyReport(),
+      activeTab: "overview"
+    };
+
+    const els = {
+      dropZone: document.getElementById("dropZone"),
+      chooseFiles: document.getElementById("chooseFiles"),
+      chooseFolder: document.getElementById("chooseFolder"),
+      clearData: document.getElementById("clearData"),
+      fileInput: document.getElementById("fileInput"),
+      folderInput: document.getElementById("folderInput"),
+      fileList: document.getElementById("fileList"),
+      statusFiles: document.getElementById("statusFiles"),
+      statusRecords: document.getElementById("statusRecords"),
+      statusPlans: document.getElementById("statusPlans"),
+      statusDuplicates: document.getElementById("statusDuplicates"),
+      statusErrors: document.getElementById("statusErrors"),
+      loadMessage: document.getElementById("loadMessage"),
+      filterPanel: document.getElementById("filterPanel"),
+      filterAddress: document.getElementById("filterAddress"),
+      filterFamily: document.getElementById("filterFamily"),
+      filterTest: document.getElementById("filterTest"),
+      filterVariant: document.getElementById("filterVariant"),
+      filterGraph: document.getElementById("filterGraph"),
+      tabs: document.getElementById("tabs"),
+      emptyState: document.getElementById("emptyState"),
+      dashboard: document.getElementById("dashboard"),
+      overview: document.getElementById("overview"),
+      graphs: document.getElementById("graphs"),
+      interclass: document.getElementById("interclass"),
+      likert: document.getElementById("likert"),
+      participants: document.getElementById("participants"),
+      quality: document.getElementById("quality")
+    };
+
+    function emptyReport() {
+      return {
+        sourceFiles: 0,
+        parsedRecords: 0,
+        planRecordsIgnored: 0,
+        unknownRecords: 0,
+        duplicateObjectiveRows: 0,
+        duplicateLikertRows: 0,
+        sourceErrors: []
+      };
+    }
+
+    function resetState() {
+      state.files = [];
+      state.objective = [];
+      state.likert = [];
+      state.unknown = [];
+      state.report = emptyReport();
+      els.fileInput.value = "";
+      els.folderInput.value = "";
+      renderFileList();
+      updateStatus();
+      populateFilters();
+      renderDashboard();
+    }
+
+    function formatBytes(bytes) {
+      if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
+      const units = ["B", "KB", "MB", "GB"];
+      const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+      return `${(bytes / Math.pow(1024, index)).toFixed(index === 0 ? 0 : 1)} ${units[index]}`;
+    }
+
+    function shortAddress(value) {
+      if (typeof value !== "string") return "—";
+      if (value.length <= 18) return value;
+      return `${value.slice(0, 8)}…${value.slice(-6)}`;
+    }
+
+    function safeText(value, fallback = "—") {
+      if (value === null || value === undefined || value === "") return fallback;
+      return String(value);
+    }
+
+    function toBool(value) {
+      if (value === null || value === undefined) return null;
+      if (typeof value === "boolean") return value;
+      if (typeof value === "number") return value !== 0;
+      if (typeof value === "string") {
+        const normalized = value.trim().toLowerCase();
+        if (["true", "1", "yes", "y"].includes(normalized)) return true;
+        if (["false", "0", "no", "n"].includes(normalized)) return false;
+      }
+      return null;
+    }
+
+    function msToS(value) {
+      return Number.isFinite(Number(value)) ? Number(value) / 1000 : null;
+    }
+
+    function joinGraphs(value) {
+      if (Array.isArray(value)) return value.map(String).join(" + ");
+      return value === null || value === undefined ? null : String(value);
+    }
+
+    function variantFromTestId(testId) {
+      if (typeof testId !== "string") return null;
+      if (testId.endsWith("-a")) return "A";
+      if (testId.endsWith("-b")) return "B";
+      return null;
+    }
+
+    function testNumber(record) {
+      if (Number.isInteger(record.testNumber)) return record.testNumber;
+      const tokens = String(record.testId || "").split("-");
+      const idx = tokens.indexOf("test");
+      if (idx >= 0 && /^\d+$/.test(tokens[idx + 1] || "")) return Number(tokens[idx + 1]);
+      return null;
+    }
+
+    function family(kind, testId) {
+      if (kind.startsWith("likert") || testId.startsWith("inter-test")) return "Inter-classe";
+      if (testId.startsWith("cat1")) return "Categoria 1";
+      if (testId.startsWith("cat2")) return "Categoria 2";
+      if (testId.startsWith("cat3")) return "Categoria 3";
+      if (testId.startsWith("cat4")) return "Categoria 4";
+      return "Altro";
+    }
+
+    function isPlan(record) {
+      return Object.prototype.hasOwnProperty.call(record, "trials")
+        && !Object.prototype.hasOwnProperty.call(record, "trialIndex")
+        && !Object.prototype.hasOwnProperty.call(record, "responseType")
+        && !Object.prototype.hasOwnProperty.call(record, "selectedLabel")
+        && !Object.prototype.hasOwnProperty.call(record, "selectedAnswer")
+        && !Object.prototype.hasOwnProperty.call(record, "selectedTrend");
+    }
+
+    function classify(record) {
+      const responseType = record.responseType;
+      if (responseType === "inter-class-likert-variant") return "likert_variant";
+      if (responseType === "inter-class-likert-comparative") return "likert_comparative";
+      if (isPlan(record)) return "plan";
+      if (Object.prototype.hasOwnProperty.call(record, "caseId") && Object.prototype.hasOwnProperty.call(record, "selectedAnswer")) return "inter_trial";
+      if (Object.prototype.hasOwnProperty.call(record, "expectedTrend") || record.testId === "cat4-temporal") return "temporal_trial";
+      if (Object.prototype.hasOwnProperty.call(record, "expectedDominant")) return "composition_trial";
+      if (Object.prototype.hasOwnProperty.call(record, "leftGraph") && Object.prototype.hasOwnProperty.call(record, "rightGraph")) return "graph_comparison_trial";
+      if (record.testId === "cat3-test-3-1" || Object.prototype.hasOwnProperty.call(record, "signedError")) return "numeric_trial";
+      if (Object.prototype.hasOwnProperty.call(record, "expectedValue") && Object.prototype.hasOwnProperty.call(record, "selectedValue")) return "value_trial";
+      if (Object.prototype.hasOwnProperty.call(record, "expectedLabel") && Object.prototype.hasOwnProperty.call(record, "selectedLabel")) return "categorical_trial";
+      return "unknown";
+    }
+
+    function parseText(text, sourceName) {
+      const cleaned = text.replace(/^\uFEFF/, "").trim();
+      if (!cleaned) return [];
+      try {
+        const parsed = JSON.parse(cleaned);
+        if (Array.isArray(parsed)) return parsed.filter(item => item && typeof item === "object" && !Array.isArray(item));
+        if (parsed && typeof parsed === "object") return [parsed];
+        return [];
+      } catch (_) {
+        const rows = [];
+        cleaned.split(/\r?\n/).forEach((line, index) => {
+          const trimmed = line.trim();
+          if (!trimmed) return;
+          try {
+            const value = JSON.parse(trimmed);
+            if (Array.isArray(value)) rows.push(...value.filter(item => item && typeof item === "object" && !Array.isArray(item)));
+            else if (value && typeof value === "object") rows.push(value);
+          } catch (error) {
+            throw new Error(`${sourceName}: JSONL non valido alla riga ${index + 1}: ${error.message}`);
+          }
+        });
+        return rows;
+      }
+    }
+
+    function objectiveRow(record, kind, sourceFile) {
+      const testId = String(record.testId || "unknown");
+      let graph = record.graph ?? null;
+      let graphLabel = record.graphLabel ?? null;
+      if (kind === "graph_comparison_trial") {
+        graph = `${record.leftGraph ?? "?"} vs ${record.rightGraph ?? "?"}`;
+        graphLabel = `${record.leftGraphLabel ?? "?"} vs ${record.rightGraphLabel ?? "?"}`;
+      } else if (kind === "inter_trial") {
+        graph = joinGraphs(record.graphCombination);
+        graphLabel = graph;
+      }
+
+      let primaryCorrect = null;
+      let anomalyCorrect = null;
+      let exactCorrect = null;
+      let errorValue = null;
+      let errorMetric = null;
+      let expected = null;
+      let selected = null;
+
+      if (kind === "categorical_trial") {
+        primaryCorrect = toBool(record.isCorrect);
+        expected = record.expectedLabel;
+        selected = record.selectedLabel;
+      } else if (kind === "value_trial") {
+        primaryCorrect = toBool(record.isCorrect);
+        exactCorrect = toBool(record.isExactValue);
+        errorValue = numberOrNull(record.absoluteError);
+        errorMetric = "Errore assoluto valore";
+        expected = record.expectedValue;
+        selected = record.selectedValue;
+      } else if (kind === "composition_trial") {
+        primaryCorrect = toBool(record.isDominantCorrect);
+        errorValue = numberOrNull(record.meanAbsolutePercentageError);
+        errorMetric = "Errore medio composizione (punti %)";
+        expected = record.expectedDominant;
+        selected = record.selectedDominant;
+      } else if (kind === "numeric_trial") {
+        primaryCorrect = toBool(record.isCorrect);
+        exactCorrect = toBool(record.isExactValue);
+        errorValue = numberOrNull(record.absoluteError);
+        errorMetric = "Errore assoluto";
+        expected = record.expectedValue;
+        selected = record.selectedValue;
+      } else if (kind === "graph_comparison_trial") {
+        primaryCorrect = toBool(record.isChoiceCorrect);
+        errorValue = numberOrNull(record.distanceAbsoluteError);
+        errorMetric = "Errore distanza";
+        expected = record.expectedChoice;
+        selected = record.selectedChoice;
+      } else if (kind === "temporal_trial") {
+        primaryCorrect = toBool(record.isTrendCorrect);
+        anomalyCorrect = toBool(record.isAnomalyCorrect);
+        expected = record.expectedTrend;
+        selected = record.selectedTrend;
+      } else if (kind === "inter_trial") {
+        primaryCorrect = toBool(record.isScenarioCorrect);
+        anomalyCorrect = toBool(record.isAnomalyCorrect);
+        expected = record.expectedAnswer;
+        selected = record.selectedAnswer;
+      }
+
+      let jointCorrect = primaryCorrect;
+      if (primaryCorrect !== null && anomalyCorrect !== null) jointCorrect = primaryCorrect && anomalyCorrect;
+      const reportedIsCorrect = toBool(record.isCorrect);
+      let reportedConsistent = null;
+      if (reportedIsCorrect !== null && jointCorrect !== null) reportedConsistent = reportedIsCorrect === jointCorrect;
+
+      return {
+        source_file: sourceFile,
+        record_kind: kind,
+        run_id: record.runId ?? null,
+        address: record.address ?? null,
+        address_short: shortAddress(record.address),
+        test_id: testId,
+        test_label: TEST_LABELS[testId] || testId,
+        test_family: family(kind, testId),
+        test_number: testNumber(record),
+        variant: record.variant || variantFromTestId(testId),
+        trial_index: record.trialIndex ?? null,
+        total_trials: record.totalTrials ?? null,
+        graph,
+        graph_label: graphLabel,
+        case_id: record.caseId ?? null,
+        scenario_id: record.scenarioId ?? null,
+        scenario_label: record.scenarioLabel ?? null,
+        expected,
+        selected,
+        expected_anomaly: record.expectedAnomaly ?? null,
+        selected_anomaly: record.selectedAnomaly ?? null,
+        primary_correct: primaryCorrect,
+        anomaly_correct: anomalyCorrect,
+        joint_correct: jointCorrect,
+        exact_correct: exactCorrect,
+        reported_is_correct: reportedIsCorrect,
+        reported_accuracy_type: record.accuracyType ?? null,
+        reported_consistent: reportedConsistent,
+        error_value: errorValue,
+        error_metric: errorMetric,
+        response_time_s: msToS(record.responseTimeMs),
+        answer_time_s: msToS(record.answerTimeMs),
+        observation_time_s: msToS(record.observationTimeMs),
+        stimulus_value: numberOrNull(record.stimulusValue),
+        negative_percent: numberOrNull(record.negativePercent),
+        neutral_percent: numberOrNull(record.neutralPercent),
+        positive_percent: numberOrNull(record.positivePercent),
+        estimated_negative_percent: numberOrNull(record.estimatedNegativePercent),
+        estimated_neutral_percent: numberOrNull(record.estimatedNeutralPercent),
+        estimated_positive_percent: numberOrNull(record.estimatedPositivePercent),
+        created_at: record.createdAtServer || record.createdAtClient || null
+      };
+    }
+
+    function likertRows(record, kind, sourceFile) {
+      const questions = Array.isArray(record.questions) ? record.questions : [];
+      const answers = record.answers && typeof record.answers === "object" ? record.answers : {};
+      const questionMap = new Map();
+      questions.forEach(question => {
+        if (question && question.code !== undefined) questionMap.set(String(question.code), String(question.text ?? question.code));
+      });
+      const testId = String(record.testId || "unknown");
+      const mode = kind === "likert_comparative" ? "comparative" : "variant";
+      const variant = record.variant || variantFromTestId(testId);
+      const comparisonLabels = record.comparisonGraphCombinationLabels || {};
+
+      return Object.entries(answers).map(([code, answer]) => {
+        const numericAnswer = numberOrNull(answer);
+        let preference = null;
+        if (mode === "comparative" && numericAnswer !== null) {
+          preference = numericAnswer > 3 ? "A" : numericAnswer < 3 ? "B" : "Neutrale";
+        }
+        return {
+          source_file: sourceFile,
+          record_kind: kind,
+          run_id: record.runId ?? null,
+          address: record.address ?? null,
+          address_short: shortAddress(record.address),
+          test_id: testId,
+          test_label: TEST_LABELS[testId] || testId,
+          test_family: "Inter-classe",
+          test_number: testNumber(record),
+          likert_mode: mode,
+          variant,
+          question_code: String(code),
+          question_text: questionMap.get(String(code)) || String(code),
+          answer: numericAnswer,
+          centered_answer: numericAnswer === null ? null : numericAnswer - 3,
+          preference,
+          graph_combination: joinGraphs(record.graphCombination),
+          variant_a_graphs: joinGraphs(comparisonLabels.variantA),
+          variant_b_graphs: joinGraphs(comparisonLabels.variantB),
+          response_time_s: msToS(record.responseTimeMs),
+          scale_description: record.scaleDescription ?? null,
+          created_at: record.createdAtServer || record.createdAtClient || null
+        };
+      });
+    }
+
+    function numberOrNull(value) {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : null;
+    }
+
+    async function loadFiles(fileList) {
+      const accepted = Array.from(fileList).filter(file => /\.(json|jsonl)$/i.test(file.name));
+      if (!accepted.length) {
+        els.loadMessage.textContent = "Nessun file JSON o JSONL selezionato.";
+        return;
+      }
+
+      state.files.push(...accepted);
+      const report = emptyReport();
+      const objectiveRows = [];
+      const likertDataRows = [];
+      const unknownRows = [];
+
+      for (const file of state.files) {
+        report.sourceFiles += 1;
+        try {
+          const text = await file.text();
+          const records = parseText(text, file.webkitRelativePath || file.name);
+          for (const record of records) {
+            report.parsedRecords += 1;
+            const kind = classify(record);
+            if (kind === "plan") {
+              report.planRecordsIgnored += 1;
+            } else if (kind === "likert_variant" || kind === "likert_comparative") {
+              likertDataRows.push(...likertRows(record, kind, file.webkitRelativePath || file.name));
+            } else if (kind === "unknown") {
+              report.unknownRecords += 1;
+              unknownRows.push({ source_file: file.webkitRelativePath || file.name, ...record });
+            } else {
+              objectiveRows.push(objectiveRow(record, kind, file.webkitRelativePath || file.name));
+            }
+          }
+        } catch (error) {
+          report.sourceErrors.push(error.message || String(error));
+        }
+      }
+
+      const objectiveDedup = deduplicate(objectiveRows, row => `${row.record_kind}|${row.run_id ?? ""}|${row.trial_index ?? ""}`);
+      const likertDedup = deduplicate(likertDataRows, row => `${row.record_kind}|${row.run_id ?? ""}|${row.question_code ?? ""}`);
+      report.duplicateObjectiveRows = objectiveRows.length - objectiveDedup.length;
+      report.duplicateLikertRows = likertDataRows.length - likertDedup.length;
+
+      state.objective = objectiveDedup;
+      state.likert = likertDedup;
+      state.unknown = unknownRows;
+      state.report = report;
+
+      renderFileList();
+      updateStatus();
+      populateFilters();
+      renderDashboard();
+    }
+
+    function deduplicate(rows, keyFn) {
+      const map = new Map();
+      rows.forEach(row => map.set(keyFn(row), row));
+      return Array.from(map.values());
+    }
+
+    function renderFileList() {
+      els.fileList.replaceChildren();
+      state.files.forEach(file => {
+        const row = document.createElement("div");
+        row.className = "file-row";
+        const name = document.createElement("span");
+        name.textContent = file.webkitRelativePath || file.name;
+        name.title = file.webkitRelativePath || file.name;
+        const size = document.createElement("span");
+        size.className = "file-size";
+        size.textContent = formatBytes(file.size);
+        row.append(name, size);
+        els.fileList.appendChild(row);
+      });
+      els.clearData.disabled = state.files.length === 0;
+    }
+
+    function updateStatus() {
+      els.statusFiles.textContent = state.report.sourceFiles;
+      els.statusRecords.textContent = state.objective.length + state.likert.length;
+      els.statusPlans.textContent = state.report.planRecordsIgnored;
+      els.statusDuplicates.textContent = state.report.duplicateObjectiveRows + state.report.duplicateLikertRows;
+      els.statusErrors.textContent = state.report.sourceErrors.length;
+      if (!state.files.length) {
+        els.loadMessage.textContent = "Nessun dato caricato.";
+      } else if (state.objective.length || state.likert.length) {
+        els.loadMessage.textContent = `${state.objective.length} prove oggettive e ${state.likert.length} risposte Likert pronte per l’analisi.`;
+      } else {
+        els.loadMessage.textContent = "I file sono stati letti, ma non sono state trovate risposte compatibili.";
+      }
+    }
+
+    function uniqueSorted(values) {
+      return Array.from(new Set(values.filter(value => value !== null && value !== undefined && value !== ""))).sort((a, b) => String(a).localeCompare(String(b), "it"));
+    }
+
+    function setOptions(select, values, allLabel, labelFn = value => value) {
+      const previous = select.value;
+      select.replaceChildren();
+      const all = document.createElement("option");
+      all.value = "*";
+      all.textContent = allLabel;
+      select.appendChild(all);
+      values.forEach(value => {
+        const option = document.createElement("option");
+        option.value = String(value);
+        option.textContent = labelFn(value);
+        select.appendChild(option);
+      });
+      select.value = values.map(String).includes(previous) ? previous : "*";
+    }
+
+    function populateFilters() {
+      const combined = [...state.objective, ...state.likert];
+      setOptions(els.filterAddress, uniqueSorted(combined.map(row => row.address)), "Tutti", shortAddress);
+      setOptions(els.filterFamily, uniqueSorted(combined.map(row => row.test_family)), "Tutte");
+      setOptions(els.filterTest, uniqueSorted(combined.map(row => row.test_id)), "Tutti", value => TEST_LABELS[value] || value);
+      setOptions(els.filterVariant, uniqueSorted(combined.map(row => row.variant)), "Tutte");
+      setOptions(els.filterGraph, uniqueSorted(state.objective.map(row => row.graph_label || row.graph)), "Tutti");
+    }
+
+    function filteredData() {
+      const selections = {
+        address: els.filterAddress.value,
+        family: els.filterFamily.value,
+        test: els.filterTest.value,
+        variant: els.filterVariant.value,
+        graph: els.filterGraph.value
+      };
+      const common = row => (selections.address === "*" || String(row.address) === selections.address)
+        && (selections.family === "*" || String(row.test_family) === selections.family)
+        && (selections.test === "*" || String(row.test_id) === selections.test)
+        && (selections.variant === "*" || String(row.variant) === selections.variant);
+      return {
+        objective: state.objective.filter(row => common(row) && (selections.graph === "*" || String(row.graph_label || row.graph) === selections.graph)),
+        likert: state.likert.filter(common)
+      };
+    }
+
+    function mean(values) {
+      const usable = values.filter(value => Number.isFinite(value));
+      if (!usable.length) return null;
+      return usable.reduce((sum, value) => sum + value, 0) / usable.length;
+    }
+
+    function booleanMean(values) {
+      const usable = values.filter(value => value === true || value === false);
+      if (!usable.length) return null;
+      return usable.filter(Boolean).length / usable.length;
+    }
+
+    function median(values) {
+      const usable = values.filter(value => Number.isFinite(value)).sort((a, b) => a - b);
+      if (!usable.length) return null;
+      const middle = Math.floor(usable.length / 2);
+      return usable.length % 2 ? usable[middle] : (usable[middle - 1] + usable[middle]) / 2;
+    }
+
+    function fmtPct(value) {
+      return Number.isFinite(value) ? `${(value * 100).toFixed(1)}%` : "—";
+    }
+
+    function fmtSeconds(value) {
+      return Number.isFinite(value) ? `${value.toFixed(1)} s` : "—";
+    }
+
+    function fmtNumber(value, digits = 2) {
+      return Number.isFinite(value) ? value.toFixed(digits) : "—";
+    }
+
+    function groupBy(rows, keyFn) {
+      const groups = new Map();
+      rows.forEach(row => {
+        const key = keyFn(row);
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(row);
+      });
+      return groups;
+    }
+
+    function summarizeObjective(rows, keyFn, labelFn = null) {
+      return Array.from(groupBy(rows, keyFn).entries()).map(([key, group]) => ({
+        key,
+        label: labelFn ? labelFn(group[0], key) : String(key),
+        trials: group.length,
+        participants: new Set(group.map(row => row.address).filter(Boolean)).size,
+        runs: new Set(group.map(row => row.run_id).filter(Boolean)).size,
+        primary_accuracy: booleanMean(group.map(row => row.primary_correct)),
+        anomaly_accuracy: booleanMean(group.map(row => row.anomaly_correct)),
+        joint_accuracy: booleanMean(group.map(row => row.joint_correct)),
+        exact_accuracy: booleanMean(group.map(row => row.exact_correct)),
+        median_response_s: median(group.map(row => row.response_time_s)),
+        mean_response_s: mean(group.map(row => row.response_time_s)),
+        mean_error: mean(group.map(row => row.error_value))
+      }));
+    }
+
+    function createElement(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined) el.textContent = text;
+      return el;
+    }
+
+    function section(title) {
+      const panel = createElement("section", "panel");
+      panel.appendChild(createElement("h2", null, title));
+      return panel;
+    }
+
+    function emptyMessage(text) {
+      return createElement("div", "empty", text);
+    }
+
+    function metricGrid(metrics) {
+      const grid = createElement("div", "metric-grid");
+      metrics.forEach(metric => {
+        const card = createElement("div", "metric");
+        card.appendChild(createElement("div", "metric-label", metric.label));
+        card.appendChild(createElement("div", "metric-value", metric.value));
+        if (metric.note) card.appendChild(createElement("div", "metric-note", metric.note));
+        grid.appendChild(card);
+      });
+      return grid;
+    }
+
+    function simpleBarChart(rows, options) {
+      const wrapper = createElement("div", "chart");
+      if (!rows.length) return emptyMessage(options.emptyText || "Nessun dato disponibile.");
+      const values = rows.map(options.value).filter(Number.isFinite);
+      const max = options.max ?? Math.max(...values, 1);
+      rows.forEach(row => {
+        const value = options.value(row);
+        const chartRow = createElement("div", "chart-row");
+        const label = createElement("div", "chart-label", options.label(row));
+        label.title = options.label(row);
+        const track = createElement("div", "bar-track");
+        const fill = createElement("div", `bar-fill ${options.fillClass || ""}`.trim());
+        const width = Number.isFinite(value) ? Math.max(0, Math.min(100, (value / max) * 100)) : 0;
+        fill.style.width = `${width}%`;
+        track.appendChild(fill);
+        chartRow.append(label, track, createElement("div", "bar-value", options.format ? options.format(value) : fmtNumber(value)));
+        wrapper.appendChild(chartRow);
+      });
+      return wrapper;
+    }
+
+    function groupedBarChart(rows, series) {
+      if (!rows.length) return emptyMessage("Nessun dato disponibile.");
+      const wrapper = createElement("div", "chart");
+      const legend = createElement("div", "legend");
+      series.forEach((item, index) => {
+        const legendItem = createElement("span", "legend-item");
+        legendItem.append(createElement("span", `legend-dot ${index === 1 ? "series-2" : index === 2 ? "series-3" : ""}`), createElement("span", null, item.label));
+        legend.appendChild(legendItem);
+      });
+      wrapper.appendChild(legend);
+      rows.forEach(row => {
+        const groupRow = createElement("div", "group-chart-row");
+        const label = createElement("div", "chart-label", row.label);
+        label.title = row.label;
+        const bars = createElement("div", "group-bars");
+        series.forEach((item, index) => {
+          const value = item.value(row);
+          const mini = createElement("div", "mini-bar");
+          mini.appendChild(createElement("div", "mini-label", item.shortLabel || item.label));
+          const track = createElement("div", "bar-track");
+          const fill = createElement("div", `bar-fill ${index === 1 ? "series-2" : index === 2 ? "series-3" : ""}`);
+          fill.style.width = `${Number.isFinite(value) ? Math.max(0, Math.min(100, value * 100)) : 0}%`;
+          track.appendChild(fill);
+          mini.append(track, createElement("div", "bar-value", fmtPct(value)));
+          bars.appendChild(mini);
+        });
+        groupRow.append(label, bars);
+        wrapper.appendChild(groupRow);
+      });
+      return wrapper;
+    }
+
+    function renderTable(columns, rows, maxRows = 200) {
+      if (!rows.length) return emptyMessage("Nessun dato disponibile.");
+      const wrap = createElement("div", "table-wrap");
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      columns.forEach(column => {
+        const th = createElement("th", column.align === "right" ? "number" : "", column.label);
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+      const tbody = document.createElement("tbody");
+      rows.slice(0, maxRows).forEach(row => {
+        const tr = document.createElement("tr");
+        columns.forEach(column => {
+          const td = createElement("td", column.align === "right" ? "number" : "");
+          const raw = typeof column.value === "function" ? column.value(row) : row[column.value];
+          if (column.node) {
+            td.appendChild(column.node(raw, row));
+          } else {
+            td.textContent = column.format ? column.format(raw, row) : safeText(raw);
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      table.append(thead, tbody);
+      wrap.appendChild(table);
+      if (rows.length > maxRows) {
+        const note = createElement("div", "small", `Mostrate ${maxRows} righe su ${rows.length}. Usa l’esportazione CSV per ottenere tutti i record.`);
+        note.style.padding = "8px 10px";
+        wrap.appendChild(note);
+      }
+      return wrap;
+    }
+
+    function boolBadge(value) {
+      const badge = createElement("span", `badge ${value === true ? "good" : value === false ? "bad" : "warn"}`);
+      badge.textContent = value === true ? "Sì" : value === false ? "No" : "—";
+      return badge;
+    }
+
+    function renderDashboard() {
+      const hasData = state.objective.length > 0 || state.likert.length > 0;
+      els.filterPanel.hidden = !hasData;
+      els.tabs.hidden = !hasData;
+      els.emptyState.hidden = hasData;
+      els.dashboard.hidden = !hasData;
+      if (!hasData) return;
+
+      const filtered = filteredData();
+      renderOverview(filtered.objective, filtered.likert);
+      renderGraphs(filtered.objective);
+      renderInterclass(filtered.objective);
+      renderLikert(filtered.likert);
+      renderParticipants(filtered.objective, filtered.likert);
+      renderQuality(filtered.objective, filtered.likert);
+      activateTab(state.activeTab);
+    }
+
+    function renderOverview(objective, likert) {
+      els.overview.replaceChildren();
+      const overviewPanel = section("Panoramica");
+      const addresses = new Set([...objective.map(row => row.address), ...likert.map(row => row.address)].filter(Boolean));
+      overviewPanel.appendChild(metricGrid([
+        { label: "Partecipanti", value: String(addresses.size) },
+        { label: "Run oggettive", value: String(new Set(objective.map(row => row.run_id).filter(Boolean)).size) },
+        { label: "Prove oggettive", value: String(objective.length) },
+        { label: "Accuratezza primaria", value: fmtPct(booleanMean(objective.map(row => row.primary_correct))) },
+        { label: "Accuratezza congiunta", value: fmtPct(booleanMean(objective.map(row => row.joint_correct))), note: "Scenario/trend + anomalia quando presenti" },
+        { label: "Tempo mediano", value: fmtSeconds(median(objective.map(row => row.response_time_s))) }
+      ]));
+
+      if (!objective.length) {
+        overviewPanel.appendChild(emptyMessage("Nessuna prova oggettiva corrisponde ai filtri selezionati."));
+        els.overview.appendChild(overviewPanel);
+        return;
+      }
+
+      const summary = summarizeObjective(objective, row => row.test_id, row => row.test_label)
+        .sort((a, b) => (b.primary_accuracy ?? -1) - (a.primary_accuracy ?? -1));
+      const columns = createElement("div", "two-col");
+      const accuracyPanel = section("Accuratezza per test");
+      accuracyPanel.appendChild(simpleBarChart(summary, {
+        label: row => row.label,
+        value: row => row.primary_accuracy,
+        max: 1,
+        format: fmtPct
+      }));
+      const timePanel = section("Tempo mediano per test");
+      timePanel.appendChild(simpleBarChart([...summary].sort((a, b) => (b.median_response_s ?? -1) - (a.median_response_s ?? -1)), {
+        label: row => row.label,
+        value: row => row.median_response_s,
+        format: fmtSeconds
+      }));
+      columns.append(accuracyPanel, timePanel);
+
+      const tablePanel = section("Riepilogo per test");
+      tablePanel.classList.add("section-gap");
+      tablePanel.appendChild(renderTable([
+        { label: "Test", value: "label" },
+        { label: "Prove", value: "trials", align: "right" },
+        { label: "Partecipanti", value: "participants", align: "right" },
+        { label: "Acc. primaria", value: "primary_accuracy", format: fmtPct, align: "right" },
+        { label: "Acc. anomalia", value: "anomaly_accuracy", format: fmtPct, align: "right" },
+        { label: "Acc. congiunta", value: "joint_accuracy", format: fmtPct, align: "right" },
+        { label: "Tempo mediano", value: "median_response_s", format: fmtSeconds, align: "right" },
+        { label: "Errore medio", value: "mean_error", format: value => fmtNumber(value, 2), align: "right" }
+      ], summary));
+
+      els.overview.append(overviewPanel, columns, tablePanel);
+    }
+
+    function renderGraphs(objective) {
+      els.graphs.replaceChildren();
+      const panel = section("Confronto tra visualizzazioni");
+      const subset = objective.filter(row => ["Categoria 1", "Categoria 2", "Categoria 3", "Categoria 4"].includes(row.test_family));
+      if (!subset.length) {
+        panel.appendChild(emptyMessage("Nessun test di categoria corrisponde ai filtri selezionati."));
+        els.graphs.appendChild(panel);
+        return;
+      }
+
+      const summary = summarizeObjective(subset, row => row.graph_label || row.graph || "Non specificato", (row, key) => key)
+        .sort((a, b) => (b.primary_accuracy ?? -1) - (a.primary_accuracy ?? -1));
+      panel.appendChild(metricGrid([
+        { label: "Grafici confrontati", value: String(summary.length) },
+        { label: "Accuratezza media", value: fmtPct(booleanMean(subset.map(row => row.primary_correct))) },
+        { label: "Tempo mediano", value: fmtSeconds(median(subset.map(row => row.response_time_s))) },
+        { label: "Errore medio", value: fmtNumber(mean(subset.map(row => row.error_value)), 2) },
+        { label: "Risposte esatte", value: fmtPct(booleanMean(subset.map(row => row.exact_correct))) },
+        { label: "Run", value: String(new Set(subset.map(row => row.run_id).filter(Boolean)).size) }
+      ]));
+
+      const columns = createElement("div", "two-col");
+      const accuracyPanel = section("Accuratezza per grafico");
+      accuracyPanel.appendChild(simpleBarChart(summary, { label: row => row.label, value: row => row.primary_accuracy, max: 1, format: fmtPct }));
+      const speedPanel = section("Tempo mediano per grafico");
+      speedPanel.appendChild(simpleBarChart([...summary].sort((a, b) => (b.median_response_s ?? -1) - (a.median_response_s ?? -1)), { label: row => row.label, value: row => row.median_response_s, format: fmtSeconds }));
+      columns.append(accuracyPanel, speedPanel);
+
+      const detailPanel = section("Dettaglio per grafico");
+      detailPanel.classList.add("section-gap");
+      detailPanel.appendChild(renderTable([
+        { label: "Grafico", value: "label" },
+        { label: "Prove", value: "trials", align: "right" },
+        { label: "Partecipanti", value: "participants", align: "right" },
+        { label: "Accuratezza", value: "primary_accuracy", format: fmtPct, align: "right" },
+        { label: "Tempo mediano", value: "median_response_s", format: fmtSeconds, align: "right" },
+        { label: "Errore medio", value: "mean_error", format: value => fmtNumber(value, 2), align: "right" }
+      ], summary));
+
+      const confusionRows = buildConfusionRows(subset);
+      const confusionPanel = section("Risposte attese e selezionate");
+      confusionPanel.classList.add("section-gap");
+      confusionPanel.appendChild(renderTable([
+        { label: "Atteso", value: "expected" },
+        { label: "Selezionato", value: "selected" },
+        { label: "Conteggio", value: "count", align: "right" },
+        { label: "Percentuale", value: "share", format: fmtPct, align: "right" }
+      ], confusionRows));
+
+      els.graphs.append(panel, columns, detailPanel, confusionPanel);
+    }
+
+    function buildConfusionRows(rows) {
+      const usable = rows.filter(row => row.expected !== null && row.selected !== null);
+      const total = usable.length;
+      const groups = groupBy(usable, row => `${row.expected}|||${row.selected}`);
+      return Array.from(groups.entries()).map(([key, group]) => {
+        const [expected, selected] = key.split("|||");
+        return { expected, selected, count: group.length, share: total ? group.length / total : null };
+      }).sort((a, b) => b.count - a.count);
+    }
+
+    function renderInterclass(objective) {
+      els.interclass.replaceChildren();
+      const panel = section("Test inter-classe");
+      const subset = objective.filter(row => row.test_family === "Inter-classe");
+      if (!subset.length) {
+        panel.appendChild(emptyMessage("Nessuna prova inter-classe corrisponde ai filtri selezionati."));
+        els.interclass.appendChild(panel);
+        return;
+      }
+
+      const summary = summarizeObjective(subset, row => `${row.test_number ?? "?"}|${row.variant ?? "?"}`, (row) => `Test ${row.test_number ?? "?"} · Variante ${row.variant ?? "?"}`)
+        .sort((a, b) => a.label.localeCompare(b.label, "it"));
+      panel.appendChild(metricGrid([
+        { label: "Prove", value: String(subset.length) },
+        { label: "Acc. scenario", value: fmtPct(booleanMean(subset.map(row => row.primary_correct))) },
+        { label: "Acc. anomalia", value: fmtPct(booleanMean(subset.map(row => row.anomaly_correct))) },
+        { label: "Acc. congiunta", value: fmtPct(booleanMean(subset.map(row => row.joint_correct))) },
+        { label: "Tempo di risposta", value: fmtSeconds(median(subset.map(row => row.response_time_s))) },
+        { label: "Osservazione", value: fmtSeconds(median(subset.map(row => row.observation_time_s))) }
+      ]));
+
+      const chartPanel = section("Correttezza per variante");
+      chartPanel.classList.add("section-gap");
+      chartPanel.appendChild(groupedBarChart(summary, [
+        { label: "Scenario/trend", shortLabel: "Scenario", value: row => row.primary_accuracy },
+        { label: "Anomalia", shortLabel: "Anomalia", value: row => row.anomaly_accuracy },
+        { label: "Congiunta", shortLabel: "Congiunta", value: row => row.joint_accuracy }
+      ]));
+
+      const detailPanel = section("Dettaglio inter-classe");
+      detailPanel.classList.add("section-gap");
+      detailPanel.appendChild(renderTable([
+        { label: "Test / variante", value: "label" },
+        { label: "Prove", value: "trials", align: "right" },
+        { label: "Acc. scenario", value: "primary_accuracy", format: fmtPct, align: "right" },
+        { label: "Acc. anomalia", value: "anomaly_accuracy", format: fmtPct, align: "right" },
+        { label: "Acc. congiunta", value: "joint_accuracy", format: fmtPct, align: "right" },
+        { label: "Tempo mediano", value: "median_response_s", format: fmtSeconds, align: "right" }
+      ], summary));
+
+      const scenarioRows = summarizeObjective(subset, row => `${row.scenario_label || row.scenario_id || "Non specificato"}|${row.variant || "?"}`, (row) => `${row.scenario_label || row.scenario_id || "Non specificato"} · ${row.variant || "?"}`)
+        .sort((a, b) => (b.joint_accuracy ?? -1) - (a.joint_accuracy ?? -1));
+      const scenarioPanel = section("Prestazioni per scenario");
+      scenarioPanel.classList.add("section-gap");
+      scenarioPanel.appendChild(renderTable([
+        { label: "Scenario / variante", value: "label" },
+        { label: "Prove", value: "trials", align: "right" },
+        { label: "Acc. scenario", value: "primary_accuracy", format: fmtPct, align: "right" },
+        { label: "Acc. anomalia", value: "anomaly_accuracy", format: fmtPct, align: "right" },
+        { label: "Acc. congiunta", value: "joint_accuracy", format: fmtPct, align: "right" }
+      ], scenarioRows));
+
+      els.interclass.append(panel, chartPanel, detailPanel, scenarioPanel);
+    }
+
+    function renderLikert(likert) {
+      els.likert.replaceChildren();
+      const panel = section("Questionari Likert");
+      if (!likert.length) {
+        panel.appendChild(emptyMessage("Nessuna risposta Likert corrisponde ai filtri selezionati."));
+        els.likert.appendChild(panel);
+        return;
+      }
+
+      const variantRows = likert.filter(row => row.likert_mode === "variant");
+      const comparativeRows = likert.filter(row => row.likert_mode === "comparative");
+      panel.appendChild(metricGrid([
+        { label: "Risposte Likert", value: String(likert.length) },
+        { label: "Partecipanti", value: String(new Set(likert.map(row => row.address).filter(Boolean)).size) },
+        { label: "Media complessiva", value: fmtNumber(mean(likert.map(row => row.answer)), 2), note: "Scala 1–5" },
+        { label: "Risposte variante", value: String(variantRows.length) },
+        { label: "Risposte comparative", value: String(comparativeRows.length) },
+        { label: "Tempo mediano", value: fmtSeconds(median(likert.map(row => row.response_time_s))) }
+      ]));
+
+      if (variantRows.length) {
+        const variantSummary = Array.from(groupBy(variantRows, row => `${row.test_number ?? "?"}|${row.variant ?? "?"}|${row.question_code}`).entries()).map(([key, group]) => ({
+          key,
+          label: `${group[0].question_code} · T${group[0].test_number ?? "?"}${group[0].variant ?? "?"}`,
+          question: group[0].question_text,
+          test: group[0].test_number,
+          variant: group[0].variant,
+          average: mean(group.map(row => row.answer)),
+          responses: group.length
+        })).sort((a, b) => a.label.localeCompare(b.label, "it"));
+
+        const variantPanel = section("Likert per variante");
+        variantPanel.classList.add("section-gap");
+        variantPanel.appendChild(simpleBarChart(variantSummary, {
+          label: row => row.label,
+          value: row => row.average,
+          max: 5,
+          format: value => fmtNumber(value, 2)
+        }));
+        variantPanel.appendChild(renderTable([
+          { label: "Codice", value: "label" },
+          { label: "Domanda", value: "question" },
+          { label: "Media", value: "average", format: value => fmtNumber(value, 2), align: "right" },
+          { label: "Risposte", value: "responses", align: "right" }
+        ], variantSummary));
+        els.likert.append(panel, variantPanel);
+      } else {
+        els.likert.append(panel);
+      }
+
+      if (comparativeRows.length) {
+        const comparisonSummary = Array.from(groupBy(comparativeRows, row => `${row.test_number ?? "?"}|${row.question_code}`).entries()).map(([key, group]) => {
+          const average = mean(group.map(row => row.answer));
+          const preferences = group.map(row => row.preference);
+          return {
+            key,
+            label: `${group[0].question_code} · Test ${group[0].test_number ?? "?"}`,
+            question: group[0].question_text,
+            average,
+            centered: Number.isFinite(average) ? average - 3 : null,
+            preference_a: preferences.length ? preferences.filter(value => value === "A").length / preferences.length : null,
+            preference_b: preferences.length ? preferences.filter(value => value === "B").length / preferences.length : null,
+            neutral: preferences.length ? preferences.filter(value => value === "Neutrale").length / preferences.length : null,
+            responses: group.length,
+            variant_a_graphs: group[0].variant_a_graphs,
+            variant_b_graphs: group[0].variant_b_graphs
+          };
+        }).sort((a, b) => a.label.localeCompare(b.label, "it"));
+
+        const comparisonPanel = section("Likert comparativi A vs B");
+        comparisonPanel.classList.add("section-gap");
+        const note = createElement("div", "notice", "Interpretazione: media superiore a 3 = preferenza per A; inferiore a 3 = preferenza per B; uguale a 3 = neutralità.");
+        comparisonPanel.appendChild(note);
+        comparisonPanel.appendChild(simpleBarChart(comparisonSummary, {
+          label: row => row.label,
+          value: row => row.average,
+          max: 5,
+          fillClass: "series-2",
+          format: value => fmtNumber(value, 2)
+        }));
+        comparisonPanel.appendChild(renderTable([
+          { label: "Codice", value: "label" },
+          { label: "Domanda", value: "question" },
+          { label: "Media", value: "average", format: value => fmtNumber(value, 2), align: "right" },
+          { label: "Preferenza A", value: "preference_a", format: fmtPct, align: "right" },
+          { label: "Neutrale", value: "neutral", format: fmtPct, align: "right" },
+          { label: "Preferenza B", value: "preference_b", format: fmtPct, align: "right" },
+          { label: "Risposte", value: "responses", align: "right" }
+        ], comparisonSummary));
+        els.likert.appendChild(comparisonPanel);
+      }
+    }
+
+    function renderParticipants(objective, likert) {
+      els.participants.replaceChildren();
+      const panel = section("Analisi per partecipante");
+      const addresses = uniqueSorted([...objective.map(row => row.address), ...likert.map(row => row.address)]);
+      if (!addresses.length) {
+        panel.appendChild(emptyMessage("Nessun partecipante corrisponde ai filtri selezionati."));
+        els.participants.appendChild(panel);
+        return;
+      }
+
+      const rows = addresses.map(address => {
+        const obj = objective.filter(row => row.address === address);
+        const lik = likert.filter(row => row.address === address);
+        return {
+          address,
+          address_short: shortAddress(address),
+          trials: obj.length,
+          runs: new Set(obj.map(row => row.run_id).filter(Boolean)).size,
+          primary_accuracy: booleanMean(obj.map(row => row.primary_correct)),
+          joint_accuracy: booleanMean(obj.map(row => row.joint_correct)),
+          median_response_s: median(obj.map(row => row.response_time_s)),
+          likert_average: mean(lik.map(row => row.answer)),
+          likert_responses: lik.length
+        };
+      }).sort((a, b) => (b.primary_accuracy ?? -1) - (a.primary_accuracy ?? -1));
+
+      panel.appendChild(metricGrid([
+        { label: "Partecipanti", value: String(rows.length) },
+        { label: "Media prove", value: fmtNumber(mean(rows.map(row => row.trials)), 1) },
+        { label: "Accuratezza media", value: fmtPct(mean(rows.map(row => row.primary_accuracy))) },
+        { label: "Tempo mediano globale", value: fmtSeconds(median(objective.map(row => row.response_time_s))) },
+        { label: "Likert medio", value: fmtNumber(mean(likert.map(row => row.answer)), 2) },
+        { label: "Run totali", value: String(new Set(objective.map(row => row.run_id).filter(Boolean)).size) }
+      ]));
+
+      const chartPanel = section("Accuratezza per partecipante");
+      chartPanel.classList.add("section-gap");
+      chartPanel.appendChild(simpleBarChart(rows, { label: row => row.address_short, value: row => row.primary_accuracy, max: 1, format: fmtPct }));
+
+      const tablePanel = section("Riepilogo partecipanti");
+      tablePanel.classList.add("section-gap");
+      tablePanel.appendChild(renderTable([
+        { label: "Address", value: "address_short" },
+        { label: "Prove", value: "trials", align: "right" },
+        { label: "Run", value: "runs", align: "right" },
+        { label: "Acc. primaria", value: "primary_accuracy", format: fmtPct, align: "right" },
+        { label: "Acc. congiunta", value: "joint_accuracy", format: fmtPct, align: "right" },
+        { label: "Tempo mediano", value: "median_response_s", format: fmtSeconds, align: "right" },
+        { label: "Likert medio", value: "likert_average", format: value => fmtNumber(value, 2), align: "right" },
+        { label: "Risposte Likert", value: "likert_responses", align: "right" }
+      ], rows));
+
+      els.participants.append(panel, chartPanel, tablePanel);
+    }
+
+    function runCompleteness(rows) {
+      const groups = groupBy(rows.filter(row => row.run_id), row => row.run_id);
+      return Array.from(groups.entries()).map(([runId, group]) => {
+        const expected = Math.max(...group.map(row => Number(row.total_trials)).filter(Number.isFinite), group.length);
+        const observed = new Set(group.map(row => row.trial_index).filter(value => value !== null && value !== undefined)).size || group.length;
+        return {
+          run_id: runId,
+          address_short: group[0].address_short,
+          test_label: group[0].test_label,
+          expected,
+          observed,
+          complete: expected === observed
+        };
+      });
+    }
+
+    function renderQuality(objective, likert) {
+      els.quality.replaceChildren();
+      const panel = section("Qualità dei dati ed esportazione");
+      const inconsistent = objective.filter(row => row.reported_consistent === false);
+      const completeness = runCompleteness(state.objective);
+      const incomplete = completeness.filter(row => !row.complete);
+      panel.appendChild(metricGrid([
+        { label: "File con errore", value: String(state.report.sourceErrors.length) },
+        { label: "Record sconosciuti", value: String(state.report.unknownRecords) },
+        { label: "Trial plan ignorati", value: String(state.report.planRecordsIgnored) },
+        { label: "Duplicati rimossi", value: String(state.report.duplicateObjectiveRows + state.report.duplicateLikertRows) },
+        { label: "Incongruenze isCorrect", value: String(inconsistent.length) },
+        { label: "Run incomplete", value: String(incomplete.length) }
+      ]));
+
+      if (inconsistent.length) {
+        const notice = createElement("div", "notice warn", "Sono presenti record in cui il campo generico isCorrect non coincide con la correttezza ricostruita dai campi specifici. Le metriche della dashboard usano i campi specifici.");
+        panel.appendChild(notice);
+      }
+
+      const exportSection = createElement("div", "section-gap");
+      exportSection.appendChild(createElement("h3", null, "Esporta i dati filtrati"));
+      const actions = createElement("div", "export-actions");
+      const objectiveButton = createElement("button", "button primary", "Scarica prove oggettive CSV");
+      objectiveButton.type = "button";
+      objectiveButton.disabled = !objective.length;
+      objectiveButton.addEventListener("click", () => downloadCsv("prove_oggettive_filtrate.csv", objective));
+      const likertButton = createElement("button", "button", "Scarica Likert CSV");
+      likertButton.type = "button";
+      likertButton.disabled = !likert.length;
+      likertButton.addEventListener("click", () => downloadCsv("likert_filtrato.csv", likert));
+      const fullObjectiveButton = createElement("button", "button", "Scarica tutte le prove CSV");
+      fullObjectiveButton.type = "button";
+      fullObjectiveButton.disabled = !state.objective.length;
+      fullObjectiveButton.addEventListener("click", () => downloadCsv("prove_oggettive_complete.csv", state.objective));
+      actions.append(objectiveButton, likertButton, fullObjectiveButton);
+      exportSection.appendChild(actions);
+      panel.appendChild(exportSection);
+
+      const diagnostics = createElement("div", "section-gap");
+      const errorsDetail = document.createElement("details");
+      const errorSummary = document.createElement("summary");
+      errorSummary.textContent = `Errori di lettura (${state.report.sourceErrors.length})`;
+      errorsDetail.appendChild(errorSummary);
+      errorsDetail.appendChild(state.report.sourceErrors.length ? renderTable([{ label: "Errore", value: "message" }], state.report.sourceErrors.map(message => ({ message }))) : emptyMessage("Nessun errore di lettura."));
+
+      const incompleteDetail = document.createElement("details");
+      const incompleteSummary = document.createElement("summary");
+      incompleteSummary.textContent = `Run incomplete (${incomplete.length})`;
+      incompleteDetail.appendChild(incompleteSummary);
+      incompleteDetail.appendChild(renderTable([
+        { label: "Run", value: "run_id" },
+        { label: "Address", value: "address_short" },
+        { label: "Test", value: "test_label" },
+        { label: "Attese", value: "expected", align: "right" },
+        { label: "Osservate", value: "observed", align: "right" }
+      ], incomplete));
+
+      const inconsistentDetail = document.createElement("details");
+      const inconsistentSummary = document.createElement("summary");
+      inconsistentSummary.textContent = `Incongruenze isCorrect (${inconsistent.length})`;
+      inconsistentDetail.appendChild(inconsistentSummary);
+      inconsistentDetail.appendChild(renderTable([
+        { label: "Run", value: "run_id" },
+        { label: "Test", value: "test_label" },
+        { label: "Trial", value: "trial_index", align: "right" },
+        { label: "Scenario/trend", value: "primary_correct", node: boolBadge },
+        { label: "Anomalia", value: "anomaly_correct", node: boolBadge },
+        { label: "Congiunta", value: "joint_correct", node: boolBadge },
+        { label: "isCorrect dichiarato", value: "reported_is_correct", node: boolBadge }
+      ], inconsistent));
+
+      const unknownDetail = document.createElement("details");
+      const unknownSummary = document.createElement("summary");
+      unknownSummary.textContent = `Record non riconosciuti (${state.unknown.length})`;
+      unknownDetail.appendChild(unknownSummary);
+      unknownDetail.appendChild(renderTable([
+        { label: "File", value: "source_file" },
+        { label: "Test ID", value: row => row.testId },
+        { label: "Run ID", value: row => row.runId },
+        { label: "Tipo risposta", value: row => row.responseType }
+      ], state.unknown));
+
+      diagnostics.append(errorsDetail, incompleteDetail, inconsistentDetail, unknownDetail);
+      panel.appendChild(diagnostics);
+      els.quality.appendChild(panel);
+    }
+
+    function csvEscape(value) {
+      if (value === null || value === undefined) return "";
+      const text = Array.isArray(value) ? value.join(" | ") : String(value);
+      return /[";,\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+    }
+
+    function downloadCsv(filename, rows) {
+      if (!rows.length) return;
+      const columns = Array.from(rows.reduce((set, row) => {
+        Object.keys(row).forEach(key => set.add(key));
+        return set;
+      }, new Set()));
+      const lines = [columns.map(csvEscape).join(";")];
+      rows.forEach(row => lines.push(columns.map(column => csvEscape(row[column])).join(";")));
+      const blob = new Blob(["\uFEFF" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function activateTab(tabName) {
+      state.activeTab = tabName;
+      document.querySelectorAll(".tab-button").forEach(button => button.classList.toggle("active", button.dataset.tab === tabName));
+      document.querySelectorAll(".tab-view").forEach(view => view.classList.toggle("active", view.id === tabName));
+    }
+
+    els.chooseFiles.addEventListener("click", () => els.fileInput.click());
+    els.chooseFolder.addEventListener("click", () => els.folderInput.click());
+    els.clearData.addEventListener("click", resetState);
+    els.fileInput.addEventListener("change", event => loadFiles(event.target.files));
+    els.folderInput.addEventListener("change", event => loadFiles(event.target.files));
+
+    ["dragenter", "dragover"].forEach(eventName => {
+      els.dropZone.addEventListener(eventName, event => {
+        event.preventDefault();
+        els.dropZone.classList.add("dragging");
+      });
+    });
+    ["dragleave", "drop"].forEach(eventName => {
+      els.dropZone.addEventListener(eventName, event => {
+        event.preventDefault();
+        els.dropZone.classList.remove("dragging");
+      });
+    });
+    els.dropZone.addEventListener("drop", event => loadFiles(event.dataTransfer.files));
+
+    [els.filterAddress, els.filterFamily, els.filterTest, els.filterVariant, els.filterGraph].forEach(select => {
+      select.addEventListener("change", renderDashboard);
+    });
+
+    document.querySelectorAll(".tab-button").forEach(button => {
+      button.addEventListener("click", () => activateTab(button.dataset.tab));
+    });
+
+    resetState();
+  </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+[
+  {
+    "runId": "inter-test-2-a_1785491378517_0x007e6a17e5",
+    "address": "0x007e6a17e57b1435a754823b5dc509c9e36aeb7a",
+    "testId": "inter-test-2-a",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "2A",
+    "graphCombination": [
+      "sentiment-image",
+      "bar-chart"
+    ],
+    "scenarioId": "sudden_drop_with_anomaly",
+    "scenarioLabel": "Sudden drop - with anomaly",
+    "expectedAnswer": "sudden-drop",
+    "selectedAnswer": "sudden-drop",
+    "isScenarioCorrect": true,
+    "expectedAnomaly": "late",
+    "selectedAnomaly": "late",
+    "isAnomalyCorrect": true,
+    "anomalyDescription": "A short positive rebound appears late in an otherwise negative final phase.",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "playbackStartedAtClientMs": 1785491380509,
+    "answerShownAtClientMs": 1785491421973,
+    "answeredAtClientMs": 1785491438523,
+    "observationTimeMs": 41464,
+    "responseTimeMs": 16550,
+    "totalPoints": 80,
+    "createdAtClient": "2026-07-31T09:50:38.523Z",
+    "createdAtServer": "2026-07-31T09:50:39.127Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-2-a_1785491378517_0x007e6a17e5",
+    "address": "0x007e6a17e57b1435a754823b5dc509c9e36aeb7a",
+    "testId": "inter-test-2-a",
+    "testNumber": 2,
+    "variant": "A",
+    "caseId": "2A",
+    "graphCombination": [
+      "sentiment-image",
+      "bar-chart"
+    ],
+    "scenarioId": "sudden_drop_with_anomaly",
+    "scenarioLabel": "Sudden drop - with anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T2-A1",
+        "text": "I clearly understood the composition of positive, neutral, and negative messages."
+      },
+      {
+        "code": "T2-A2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T2-A3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T2-A1": 4,
+      "T2-A2": 5,
+      "T2-A3": 4
+    },
+    "startedAtClientMs": 1785491438524,
+    "answeredAtClientMs": 1785491480723,
+    "responseTimeMs": 42199,
+    "createdAtClient": "2026-07-31T09:51:20.723Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-07-31T09:51:21.362Z"
+  }
+]

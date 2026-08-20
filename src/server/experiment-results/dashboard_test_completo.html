@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard completa dei test</title>
+<style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f6f9;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --text: #152033;
+      --muted: #64748b;
+      --border: #dce3ec;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --series-2: #7c3aed;
+      --series-3: #0891b2;
+      --good: #15803d;
+      --warn: #b45309;
+      --bad: #b91c1c;
+      --shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --panel: #111c31;
+        --panel-soft: #17233a;
+        --text: #e7edf7;
+        --muted: #9aabc1;
+        --border: #2a3a55;
+        --accent: #60a5fa;
+        --accent-soft: #172f55;
+        --series-2: #a78bfa;
+        --series-3: #22d3ee;
+        --good: #4ade80;
+        --warn: #fbbf24;
+        --bad: #f87171;
+        --shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, input, select { font: inherit; }
+
+    .shell {
+      width: min(1440px, calc(100% - 32px));
+      margin: 24px auto 56px;
+    }
+
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3 { margin: 0; }
+    h1 { font-size: clamp(1.65rem, 2.5vw, 2.35rem); letter-spacing: -0.03em; }
+    h2 { font-size: 1.25rem; margin-bottom: 14px; }
+    h3 { font-size: 1rem; margin-bottom: 10px; }
+    p { margin: 0; }
+
+    .subtitle {
+      margin-top: 8px;
+      max-width: 820px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .privacy-badge {
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .upload-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+      gap: 16px;
+    }
+
+    .drop-zone {
+      min-height: 164px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      background: var(--panel-soft);
+      padding: 22px;
+      transition: border-color .18s ease, background .18s ease;
+    }
+
+    .drop-zone.dragging {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .drop-zone strong { display: block; margin-bottom: 7px; }
+    .helper { color: var(--muted); font-size: .88rem; line-height: 1.45; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      justify-content: center;
+    }
+
+    .button {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 9px 13px;
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+
+    .button:hover { border-color: var(--accent); }
+    .button:active { transform: translateY(1px); }
+    .button.primary { background: var(--accent); color: white; border-color: var(--accent); }
+    .button.danger { color: var(--bad); }
+    .button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .file-list {
+      display: grid;
+      gap: 8px;
+      max-height: 230px;
+      overflow: auto;
+      margin-top: 12px;
+    }
+
+    .file-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 10px;
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: .86rem;
+    }
+
+    .file-row span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-size { color: var(--muted); white-space: nowrap; }
+
+    .status-box {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .status-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .status-line:last-child { border-bottom: 0; }
+    .status-line span { color: var(--muted); }
+    .status-line strong { text-align: right; }
+
+    .filters {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
+      gap: 12px;
+      align-items: end;
+    }
+
+    label.control {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    select, input[type="search"] {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 10px;
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin: 18px 0 14px;
+      padding-bottom: 2px;
+    }
+
+    .tab-button {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 9px 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab-button.active {
+      color: white;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 96px;
+    }
+
+    .metric-label { color: var(--muted); font-size: .82rem; }
+    .metric-value { margin-top: 7px; font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; }
+    .metric-note { margin-top: 4px; color: var(--muted); font-size: .78rem; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .section-gap { margin-top: 16px; }
+
+    .chart {
+      display: grid;
+      gap: 12px;
+    }
+
+    .chart-row {
+      display: grid;
+      grid-template-columns: minmax(130px, 210px) minmax(0, 1fr) 66px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .chart-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: .86rem;
+    }
+
+    .bar-track {
+      position: relative;
+      height: 14px;
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      min-width: 2px;
+      border-radius: inherit;
+      background: var(--accent);
+    }
+
+    .bar-fill.series-2 { background: var(--series-2); }
+    .bar-fill.series-3 { background: var(--series-3); }
+    .bar-fill.bad { background: var(--bad); }
+    .bar-value { text-align: right; font-variant-numeric: tabular-nums; font-size: .84rem; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted);
+      font-size: .8rem;
+      margin-bottom: 12px;
+    }
+
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+    .legend-dot.series-2 { background: var(--series-2); }
+    .legend-dot.series-3 { background: var(--series-3); }
+
+    .group-chart-row {
+      display: grid;
+      grid-template-columns: minmax(135px, 210px) minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .group-bars { display: grid; gap: 6px; }
+    .mini-bar { display: grid; grid-template-columns: 74px minmax(0, 1fr) 56px; gap: 8px; align-items: center; }
+    .mini-label { font-size: .76rem; color: var(--muted); }
+
+    .table-wrap {
+      width: 100%;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+      background: var(--panel);
+      font-size: .84rem;
+    }
+
+    th, td {
+      padding: 10px 11px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--panel-soft);
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+    td.number, th.number { text-align: right; font-variant-numeric: tabular-nums; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: .75rem;
+      background: var(--accent-soft);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .badge.good { color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
+    .badge.warn { color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); }
+    .badge.bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); }
+
+    .empty {
+      padding: 28px 16px;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      text-align: center;
+      color: var(--muted);
+      background: var(--panel-soft);
+    }
+
+    .notice {
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 9px;
+      background: var(--accent-soft);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .notice.warn { border-left-color: var(--warn); }
+    .notice.bad { border-left-color: var(--bad); }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-soft);
+      padding: 10px 12px;
+    }
+
+    details + details { margin-top: 10px; }
+    summary { cursor: pointer; font-weight: 600; }
+
+    .export-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .small { font-size: .78rem; color: var(--muted); }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: .8rem;
+      text-align: center;
+    }
+
+    @media (max-width: 1100px) {
+      .metric-grid { grid-template-columns: repeat(3, minmax(130px, 1fr)); }
+      .filters { grid-template-columns: repeat(3, minmax(140px, 1fr)); }
+    }
+
+    @media (max-width: 820px) {
+      .shell { width: min(100% - 20px, 1440px); margin-top: 14px; }
+      header { display: block; }
+      .privacy-badge { display: inline-block; margin-top: 12px; }
+      .upload-grid, .two-col, .three-col { grid-template-columns: 1fr; }
+      .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .chart-row { grid-template-columns: minmax(100px, 145px) minmax(0, 1fr) 58px; }
+    }
+
+    @media (max-width: 520px) {
+      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filters { grid-template-columns: 1fr; }
+      .panel { padding: 14px; border-radius: 14px; }
+      .chart-row { grid-template-columns: 1fr 58px; }
+      .chart-label { grid-column: 1 / -1; }
+      .group-chart-row { grid-template-columns: 1fr; }
+    }
+  
+    .wide-table { min-width: 1500px; }
+    .raw-card { border: 1px solid var(--border); border-radius: 12px; margin: 8px 0; background: var(--panel-soft); }
+    .raw-card summary { padding: 10px 12px; cursor: pointer; font-weight: 700; }
+    .raw-card pre { margin: 0; padding: 12px; overflow: auto; max-height: 440px; background: #0f172a; color: #e2e8f0; border-radius: 0 0 12px 12px; font-size: 12px; }
+    .coverage-grid { display: grid; grid-template-columns: minmax(180px, 1.4fr) repeat(4, minmax(70px, .55fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .coverage-grid > div { padding: 8px 10px; background: var(--panel); }
+    .coverage-grid .head { font-weight: 800; background: var(--panel-soft); }
+    .spark-wrap { width: 100%; overflow-x: auto; }
+    .spark-svg { min-width: 640px; width: 100%; height: 220px; display: block; background: var(--panel-soft); border: 1px solid var(--border); border-radius: 12px; }
+    .mini-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .field-chip { display:inline-block; padding:3px 7px; margin:2px; border:1px solid var(--border); border-radius:999px; font-size:11px; background:var(--panel-soft); }
+</style>
+</head>
+
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <h1>Dashboard completa dei test</h1>
+        <p class="subtitle">Analizza risposte, Likert, trial plan e stimoli. Funziona in un unico file HTML, localmente e senza dipendenze.</p>
+      </div>
+      <div class="privacy-badge">Offline · nessun dato inviato</div>
+    </header>
+
+    <section class="panel upload-grid" aria-label="Caricamento dati">
+      <div>
+        <div id="dropZone" class="drop-zone">
+          <div>
+            <strong>Trascina qui JSON e JSONL</strong>
+            <p class="helper">Carica <code>responses.jsonl</code> per tutte le risposte. Aggiungi <code>trial-plans.jsonl</code> o i singoli trial plan per collegare anche gli stimoli mostrati.</p>
+            <div class="actions">
+              <button id="chooseFiles" class="button primary" type="button">Seleziona file</button>
+              <button id="chooseFolder" class="button" type="button">Seleziona cartella</button>
+              <button id="clearData" class="button danger" type="button" disabled>Rimuovi tutto</button>
+            </div>
+            <input id="fileInput" type="file" accept=".json,.jsonl,application/json" multiple hidden>
+            <input id="folderInput" type="file" accept=".json,.jsonl,application/json" multiple webkitdirectory directory hidden>
+          </div>
+        </div>
+        <div id="fileList" class="file-list" aria-live="polite"></div>
+      </div>
+      <aside class="status-box">
+        <h2>Caricamento</h2>
+        <div class="status-line"><span>File letti</span><strong id="statusFiles">0</strong></div>
+        <div class="status-line"><span>Record grezzi</span><strong id="statusRaw">0</strong></div>
+        <div class="status-line"><span>Risposte oggettive</span><strong id="statusObjective">0</strong></div>
+        <div class="status-line"><span>Risposte Likert</span><strong id="statusLikert">0</strong></div>
+        <div class="status-line"><span>Trial plan</span><strong id="statusPlans">0</strong></div>
+        <div class="status-line"><span>Duplicati rimossi</span><strong id="statusDuplicates">0</strong></div>
+        <div class="status-line"><span>Errori</span><strong id="statusErrors">0</strong></div>
+        <p id="loadMessage" class="helper">Nessun dato caricato.</p>
+      </aside>
+    </section>
+
+    <section id="filterPanel" class="panel filters" hidden>
+      <label class="control">Address<select id="filterAddress"><option value="*">Tutti</option></select></label>
+      <label class="control">Famiglia<select id="filterFamily"><option value="*">Tutte</option></select></label>
+      <label class="control">Test<select id="filterTest"><option value="*">Tutti</option></select></label>
+      <label class="control">Variante<select id="filterVariant"><option value="*">Tutte</option></select></label>
+      <label class="control">Grafico<select id="filterGraph"><option value="*">Tutti</option></select></label>
+    </section>
+
+    <nav id="tabs" class="tabs" hidden>
+      <button class="tab-button active" data-tab="overview">Panoramica</button>
+      <button class="tab-button" data-tab="details">Dettaglio completo</button>
+      <button class="tab-button" data-tab="interclass">Inter-classe</button>
+      <button class="tab-button" data-tab="likert">Likert</button>
+      <button class="tab-button" data-tab="plans">Stimoli / trial plan</button>
+      <button class="tab-button" data-tab="participants">Partecipanti</button>
+      <button class="tab-button" data-tab="quality">Qualità ed export</button>
+      <button class="tab-button" data-tab="raw">Dati grezzi</button>
+    </nav>
+
+    <section id="emptyState" class="panel empty">Carica almeno un file per iniziare.</section>
+    <section id="dashboard" hidden>
+      <div id="overview" class="tab-view active"></div>
+      <div id="details" class="tab-view"></div>
+      <div id="interclass" class="tab-view"></div>
+      <div id="likert" class="tab-view"></div>
+      <div id="plans" class="tab-view"></div>
+      <div id="participants" class="tab-view"></div>
+      <div id="quality" class="tab-view"></div>
+      <div id="raw" class="tab-view"></div>
+    </section>
+    <footer>HTML, CSS e JavaScript nativi · elaborazione locale</footer>
+  </main>
+<script>
+"use strict";
+const TEST_LABELS={
+ "cat1-test-1-1":"Categoria 1 · Test 1.1 · Etichetta",
+ "cat1-test-1-2":"Categoria 1 · Test 1.2 · Valore 0–10",
+ "cat2-composition":"Categoria 2 · Composizione",
+ "cat3-test-3-1":"Categoria 3 · Test 3.1 · Stima",
+ "cat3-test-3-2":"Categoria 3 · Test 3.2 · Confronto",
+ "cat4-temporal":"Categoria 4 · Temporale",
+ "inter-test-1-a":"Inter 1 · A","inter-test-1-b":"Inter 1 · B",
+ "inter-test-2-a":"Inter 2 · A","inter-test-2-b":"Inter 2 · B",
+ "inter-test-3-a":"Inter 3 · A","inter-test-3-b":"Inter 3 · B",
+ "inter-test-1-final-likert":"Inter 1 · Likert finale",
+ "inter-test-2-final-likert":"Inter 2 · Likert finale",
+ "inter-test-3-final-likert":"Inter 3 · Likert finale"
+};
+const state={files:[],raw:[],objective:[],likert:[],plans:[],planTrials:[],unknown:[],report:emptyReport(),activeTab:"overview"};
+const $=id=>document.getElementById(id);
+const els={dropZone:$("dropZone"),chooseFiles:$("chooseFiles"),chooseFolder:$("chooseFolder"),clearData:$("clearData"),fileInput:$("fileInput"),folderInput:$("folderInput"),fileList:$("fileList"),statusFiles:$("statusFiles"),statusRaw:$("statusRaw"),statusObjective:$("statusObjective"),statusLikert:$("statusLikert"),statusPlans:$("statusPlans"),statusDuplicates:$("statusDuplicates"),statusErrors:$("statusErrors"),loadMessage:$("loadMessage"),filterPanel:$("filterPanel"),filterAddress:$("filterAddress"),filterFamily:$("filterFamily"),filterTest:$("filterTest"),filterVariant:$("filterVariant"),filterGraph:$("filterGraph"),tabs:$("tabs"),emptyState:$("emptyState"),dashboard:$("dashboard"),overview:$("overview"),details:$("details"),interclass:$("interclass"),likert:$("likert"),plans:$("plans"),participants:$("participants"),quality:$("quality"),raw:$("raw")};
+function emptyReport(){return{sourceFiles:0,parsedRecords:0,planRecords:0,unknownRecords:0,duplicateObjectiveRows:0,duplicateLikertRows:0,duplicatePlanRows:0,sourceErrors:[]}}
+function shortAddress(v){if(typeof v!=="string")return"—";return v.length>18?`${v.slice(0,8)}…${v.slice(-6)}`:v}
+function n(v){const x=Number(v);return Number.isFinite(x)?x:null}
+function b(v){if(v===true||v===false)return v;if(v===1||v==="1"||v==="true")return true;if(v===0||v==="0"||v==="false")return false;return null}
+function seconds(v){const x=n(v);return x===null?null:x/1000}
+function arr(v){return Array.isArray(v)?v:[]}
+function join(v){return arr(v).join(" + ")}
+function family(testId){if(String(testId).startsWith("inter-test"))return"Inter-classe";if(String(testId).startsWith("cat1"))return"Categoria 1";if(String(testId).startsWith("cat2"))return"Categoria 2";if(String(testId).startsWith("cat3"))return"Categoria 3";if(String(testId).startsWith("cat4"))return"Categoria 4";return"Altro"}
+function variant(testId,rec={}){if(rec.variant)return rec.variant;const m=String(testId||"").match(/-([ab])$/i);return m?m[1].toUpperCase():null}
+function testNumber(rec){if(n(rec.testNumber)!==null)return n(rec.testNumber);const m=String(rec.testId||"").match(/inter-test-(\d)/);return m?n(m[1]):null}
+function isPlan(r){return r&&Array.isArray(r.trials)&&r.trialIndex===undefined&&r.responseType===undefined}
+function classify(r){if(!r||typeof r!=="object")return"unknown";if(r.responseType==="inter-class-likert-variant")return"likert_variant";if(r.responseType==="inter-class-likert-comparative")return"likert_comparative";if(isPlan(r))return"plan";if(r.caseId!==undefined&&r.selectedAnswer!==undefined)return"inter_trial";if(r.testId==="cat4-temporal"||r.selectedTrend!==undefined)return"temporal_trial";if(r.expectedDominant!==undefined)return"composition_trial";if(r.leftGraph!==undefined&&r.rightGraph!==undefined)return"graph_comparison_trial";if(r.testId==="cat3-test-3-1"||r.signedError!==undefined)return"numeric_trial";if(r.expectedValue!==undefined&&r.selectedValue!==undefined)return"value_trial";if(r.expectedLabel!==undefined&&r.selectedLabel!==undefined)return"categorical_trial";return"unknown"}
+function parseText(text,name){const cleaned=text.replace(/^\uFEFF/,"").trim();if(!cleaned)return[];try{const x=JSON.parse(cleaned);return Array.isArray(x)?x.filter(o=>o&&typeof o==="object"&&!Array.isArray(o)):(x&&typeof x==="object"?[x]:[])}catch(_){const out=[];cleaned.split(/\r?\n/).forEach((line,i)=>{if(!line.trim())return;try{const x=JSON.parse(line);if(Array.isArray(x))out.push(...x.filter(o=>o&&typeof o==="object"&&!Array.isArray(o)));else if(x&&typeof x==="object")out.push(x)}catch(e){throw new Error(`${name}: JSONL non valido alla riga ${i+1}: ${e.message}`)}});return out}}
+function dedup(rows,keyFn){const m=new Map();rows.forEach(r=>m.set(keyFn(r),r));return[...m.values()]}
+function recordBase(r,kind,source){const testId=String(r.testId||"unknown");return{source_file:source,record_kind:kind,run_id:r.runId??null,address:r.address??null,address_short:shortAddress(r.address),test_id:testId,test_label:TEST_LABELS[testId]||testId,test_family:family(testId),test_number:testNumber(r),variant:variant(testId,r),trial_index:r.trialIndex??null,total_trials:r.totalTrials??null,created_at_client:r.createdAtClient??null,created_at_server:r.createdAtServer??null,raw_record:r}}
+function objectiveRow(r,kind,source){const x=recordBase(r,kind,source);let graph=r.graph??null,graphLabel=r.graphLabel??null,expected=null,selected=null,primary=null,anom=null,exact=null,error=null,errorMetric=null;
+ if(kind==="graph_comparison_trial"){graph=`${r.leftGraph??"?"} vs ${r.rightGraph??"?"}`;graphLabel=`${r.leftGraphLabel??"?"} vs ${r.rightGraphLabel??"?"}`;expected=r.expectedChoice;selected=r.selectedChoice;primary=b(r.isChoiceCorrect);error=n(r.distanceAbsoluteError);errorMetric="Errore distanza"}
+ else if(kind==="inter_trial"){graph=join(r.graphCombination);graphLabel=graph;expected=r.expectedAnswer;selected=r.selectedAnswer;primary=b(r.isScenarioCorrect);anom=b(r.isAnomalyCorrect)}
+ else if(kind==="temporal_trial"){expected=r.expectedTrend;selected=r.selectedTrend;primary=b(r.isTrendCorrect);anom=b(r.isAnomalyCorrect)}
+ else if(kind==="composition_trial"){expected=r.expectedDominant;selected=r.selectedDominant;primary=b(r.isDominantCorrect);error=n(r.meanAbsolutePercentageError);errorMetric="MAE composizione"}
+ else if(kind==="numeric_trial"){expected=r.expectedValue;selected=r.selectedValue;exact=b(r.isExactValue);error=n(r.absoluteError);errorMetric="Errore assoluto";primary=b(r.isCorrect)}
+ else if(kind==="value_trial"){expected=r.expectedValue;selected=r.selectedValue;primary=b(r.isCorrect);exact=b(r.isExactValue);error=n(r.absoluteError);errorMetric="Errore assoluto"}
+ else if(kind==="categorical_trial"){expected=r.expectedLabel;selected=r.selectedLabel;primary=b(r.isCorrect)}
+ const joint=primary!==null&&anom!==null?primary&&anom:primary;const reported=b(r.isCorrect);const consistency=reported!==null&&joint!==null?reported===joint:null;
+ return Object.assign(x,{graph,graph_label:graphLabel,client_test_id:r.clientTestId??null,case_id:r.caseId??null,scenario_id:r.scenarioId??null,scenario_label:r.scenarioLabel??null,anomaly_description:r.anomalyDescription??null,expected,selected,expected_label:r.expectedLabel??null,selected_label:r.selectedLabel??null,expected_value:n(r.expectedValue),selected_value:n(r.selectedValue),stimulus_value:n(r.stimulusValue),expected_dominant:r.expectedDominant??null,selected_dominant:r.selectedDominant??null,expected_trend:r.expectedTrend??null,selected_trend:r.selectedTrend??null,expected_answer:r.expectedAnswer??null,selected_answer:r.selectedAnswer??null,expected_anomaly:r.expectedAnomaly??null,selected_anomaly:r.selectedAnomaly??null,primary_correct:primary,anomaly_correct:anom,joint_correct:joint,exact_correct:exact,reported_is_correct:reported,reported_accuracy_type:r.accuracyType??null,reported_consistent:consistency,error_value:error,error_metric:errorMetric,absolute_error:n(r.absoluteError),signed_error:n(r.signedError),left_graph:r.leftGraph??null,left_graph_label:r.leftGraphLabel??null,left_value:n(r.leftValue),right_graph:r.rightGraph??null,right_graph_label:r.rightGraphLabel??null,right_value:n(r.rightValue),expected_choice:r.expectedChoice??null,selected_choice:r.selectedChoice??null,is_choice_correct:b(r.isChoiceCorrect),expected_distance:n(r.expectedDistance),selected_distance:n(r.selectedDistance),distance_absolute_error:n(r.distanceAbsoluteError),distance_signed_error:n(r.distanceSignedError),negative_percent:n(r.negativePercent),neutral_percent:n(r.neutralPercent),positive_percent:n(r.positivePercent),estimated_negative_percent:n(r.estimatedNegativePercent),estimated_neutral_percent:n(r.estimatedNeutralPercent),estimated_positive_percent:n(r.estimatedPositivePercent),estimated_total_percent:n(r.estimatedTotalPercent),absolute_error_negative:n(r.absoluteErrorNegative),absolute_error_neutral:n(r.absoluteErrorNeutral),absolute_error_positive:n(r.absoluteErrorPositive),mean_absolute_percentage_error:n(r.meanAbsolutePercentageError),response_time_ms:n(r.responseTimeMs),response_time_s:seconds(r.responseTimeMs),answer_time_ms:n(r.answerTimeMs),answer_time_s:seconds(r.answerTimeMs),observation_time_ms:n(r.observationTimeMs),observation_time_s:seconds(r.observationTimeMs),shown_at_client_ms:n(r.shownAtClientMs),answer_enabled_at_client_ms:n(r.answerEnabledAtClientMs),playback_started_at_client_ms:n(r.playbackStartedAtClientMs),answer_shown_at_client_ms:n(r.answerShownAtClientMs),answered_at_client_ms:n(r.answeredAtClientMs),total_points:n(r.totalPoints),plan_linked:false,plan_trial:null})}
+function likertRows(r,kind,source){const q=new Map(arr(r.questions).map(v=>[String(v.code),String(v.text??v.code)]));const answers=r.answers&&typeof r.answers==="object"?r.answers:{};const base=recordBase(r,kind,source);const mode=kind==="likert_comparative"?"comparative":"variant";const labels=r.comparisonGraphCombinationLabels||{};return Object.entries(answers).map(([code,val])=>{const answer=n(val);return Object.assign({},base,{likert_mode:mode,variant:r.variant||base.variant,question_code:String(code),question_text:q.get(String(code))||String(code),answer,centered_answer:answer===null?null:answer-3,preference:mode==="comparative"&&answer!==null?(answer>3?"A":answer<3?"B":"Neutrale"):null,graph_combination:join(r.graphCombination),variant_a_graphs:join(labels.variantA),variant_b_graphs:join(labels.variantB),scale_description:r.scaleDescription??null,response_time_ms:n(r.responseTimeMs),response_time_s:seconds(r.responseTimeMs),started_at_client_ms:n(r.startedAtClientMs),answered_at_client_ms:n(r.answeredAtClientMs)})})}
+function planRecord(r,source){const base=recordBase(r,"plan",source);return Object.assign(base,{total_trials:r.totalTrials??arr(r.trials).length,case_id:r.caseId??null,graph_combination:join(r.graphCombination),case_description:r.caseDescription??null,design:r.design??null,raw_record:r})}
+function flattenPlan(r,source){const base=planRecord(r,source);return arr(r.trials).map(t=>Object.assign({},base,{record_kind:"plan_trial",trial_index:t.trialIndex??null,graph:t.graph??null,graph_label:t.graphLabel??null,kind:t.kind??null,scenario_id:t.scenarioId??null,scenario_label:t.scenarioLabel??null,description:t.description??null,anomaly_description:t.anomalyDescription??null,expected_label:t.expectedLabel??null,expected_value:n(t.expectedValue??t.value),expected_dominant:t.expectedDominant??null,expected_choice:t.expectedChoice??null,expected_distance:n(t.expectedDistance),expected_trend:t.expectedTrend??null,expected_answer:t.expectedAnswer??null,expected_anomaly:t.expectedAnomaly??null,stimulus_value:n(t.value),negative_percent:n(t.negativePercent),neutral_percent:n(t.neutralPercent),positive_percent:n(t.positivePercent),left_graph:t.leftGraph??null,left_value:n(t.leftValue),right_graph:t.rightGraph??null,right_value:n(t.rightValue),delta:n(t.delta),total_points:n(t.totalPoints??arr(t.values).length??arr(t.data).length),series_values:arr(t.values).map(p=>n(p.value)).filter(v=>v!==null),series_data:arr(t.data),raw_trial:t}))}
+function linkPlans(){const map=new Map(state.planTrials.map(p=>[`${p.run_id||""}|${p.trial_index??""}`,p]));state.objective.forEach(o=>{const p=map.get(`${o.run_id||""}|${o.trial_index??""}`);if(p){o.plan_linked=true;o.plan_trial=p;o.delta=o.delta??p.delta;o.total_points=o.total_points??p.total_points}})}
+async function loadFiles(list){const accepted=[...list].filter(f=>/\.(json|jsonl)$/i.test(f.name));if(!accepted.length){els.loadMessage.textContent="Nessun JSON/JSONL selezionato.";return}state.files.push(...accepted);const report=emptyReport(),obj=[],lik=[],plans=[],planTrials=[],raw=[],unknown=[];for(const file of state.files){report.sourceFiles++;const source=file.webkitRelativePath||file.name;try{const records=parseText(await file.text(),source);for(const rec of records){report.parsedRecords++;const kind=classify(rec);raw.push({source_file:source,record_kind:kind,address:rec.address??null,test_id:rec.testId??null,run_id:rec.runId??null,record:rec});if(kind==="plan"){report.planRecords++;plans.push(planRecord(rec,source));planTrials.push(...flattenPlan(rec,source))}else if(kind==="likert_variant"||kind==="likert_comparative")lik.push(...likertRows(rec,kind,source));else if(kind==="unknown"){report.unknownRecords++;unknown.push({source_file:source,...rec})}else obj.push(objectiveRow(rec,kind,source))}}catch(e){report.sourceErrors.push(e.message||String(e))}}
+ const od=dedup(obj,r=>`${r.record_kind}|${r.run_id||""}|${r.trial_index??""}`),ld=dedup(lik,r=>`${r.record_kind}|${r.run_id||""}|${r.question_code||""}`),pd=dedup(plans,r=>`${r.run_id||""}|${r.test_id||""}`),ptd=dedup(planTrials,r=>`${r.run_id||""}|${r.trial_index??""}`);report.duplicateObjectiveRows=obj.length-od.length;report.duplicateLikertRows=lik.length-ld.length;report.duplicatePlanRows=plans.length-pd.length;Object.assign(state,{raw,objective:od,likert:ld,plans:pd,planTrials:ptd,unknown,report});linkPlans();renderAll()}
+function reset(){Object.assign(state,{files:[],raw:[],objective:[],likert:[],plans:[],planTrials:[],unknown:[],report:emptyReport()});els.fileInput.value="";els.folderInput.value="";renderAll()}
+function uniq(v){return[...new Set(v.filter(x=>x!==null&&x!==undefined&&x!==""))].sort((a,b)=>String(a).localeCompare(String(b),"it"))}
+function options(el,values,label,fn=x=>x){const prev=el.value;el.innerHTML=`<option value="*">${label}</option>`;values.forEach(v=>{const o=document.createElement("option");o.value=String(v);o.textContent=fn(v);el.appendChild(o)});el.value=values.map(String).includes(prev)?prev:"*"}
+function populateFilters(){const all=[...state.objective,...state.likert];options(els.filterAddress,uniq(all.map(r=>r.address)),"Tutti",shortAddress);options(els.filterFamily,uniq(all.map(r=>r.test_family)),"Tutte");options(els.filterTest,uniq(all.map(r=>r.test_id)),"Tutti",v=>TEST_LABELS[v]||v);options(els.filterVariant,uniq(all.map(r=>r.variant)),"Tutte");options(els.filterGraph,uniq(state.objective.map(r=>r.graph_label||r.graph)),"Tutti")}
+function filters(){const s={a:els.filterAddress.value,f:els.filterFamily.value,t:els.filterTest.value,v:els.filterVariant.value,g:els.filterGraph.value};const common=r=>(s.a==="*"||String(r.address)===s.a)&&(s.f==="*"||String(r.test_family)===s.f)&&(s.t==="*"||String(r.test_id)===s.t)&&(s.v==="*"||String(r.variant)===s.v);return{objective:state.objective.filter(r=>common(r)&&(s.g==="*"||String(r.graph_label||r.graph)===s.g)),likert:state.likert.filter(common),plans:state.planTrials.filter(r=>common(r)&&(s.g==="*"||String(r.graph_label||r.graph)===s.g)),raw:state.raw.filter(r=>(s.a==="*"||String(r.address)===s.a)&&(s.t==="*"||String(r.test_id)===s.t))}}
+function mean(v){const a=v.filter(Number.isFinite);return a.length?a.reduce((s,x)=>s+x,0)/a.length:null}
+function median(v){const a=v.filter(Number.isFinite).sort((a,b)=>a-b);if(!a.length)return null;const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2}
+function rate(v){const a=v.filter(x=>x===true||x===false);return a.length?a.filter(Boolean).length/a.length:null}
+function pct(v){return Number.isFinite(v)?`${(v*100).toFixed(1)}%`:"—"}
+function num(v,d=2){return Number.isFinite(v)?v.toFixed(d):"—"}
+function sec(v){return Number.isFinite(v)?`${v.toFixed(2)} s`:"—"}
+function ce(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
+function section(title){const x=ce("section","panel");x.appendChild(ce("h2",null,title));return x}
+function empty(text){return ce("div","empty",text)}
+function metricGrid(items){const g=ce("div","metric-grid");items.forEach(i=>{const c=ce("div","metric-card");c.append(ce("div","metric-label",i.label),ce("div","metric-value",i.value));if(i.note)c.appendChild(ce("div","metric-note",i.note));g.appendChild(c)});return g}
+function group(rows,key){const m=new Map();rows.forEach(r=>{const k=key(r);if(!m.has(k))m.set(k,[]);m.get(k).push(r)});return m}
+function table(columns,rows,max=500){const wrap=ce("div","table-wrap"),t=document.createElement("table"),thead=document.createElement("thead"),tr=document.createElement("tr");columns.forEach(c=>tr.appendChild(ce("th",c.align==="right"?"num":null,c.label)));thead.appendChild(tr);t.appendChild(thead);const tb=document.createElement("tbody");rows.slice(0,max).forEach(r=>{const tr=document.createElement("tr");columns.forEach(c=>{const td=ce("td",c.align==="right"?"num":null);const raw=typeof c.value==="function"?c.value(r):r[c.value];td.textContent=c.format?c.format(raw,r):(raw===null||raw===undefined||raw===""?"—":Array.isArray(raw)?raw.join(" + "):String(raw));tr.appendChild(td)});tb.appendChild(tr)});t.appendChild(tb);wrap.appendChild(t);if(rows.length>max)wrap.appendChild(ce("p","helper",`Mostrate ${max} di ${rows.length} righe.`));return wrap}
+function bars(rows,label,value,max=1,formatter=pct){const box=ce("div","bar-chart");rows.forEach(r=>{const row=ce("div","chart-row");row.appendChild(ce("div","chart-label",label(r)));const track=ce("div","chart-track"),fill=ce("div","chart-fill");const v=value(r);fill.style.width=`${Number.isFinite(v)?Math.max(0,Math.min(100,v/max*100)):0}%`;track.appendChild(fill);row.append(track,ce("div","chart-value",formatter(v)));box.appendChild(row)});return box}
+function summarize(rows,key,label){return[...group(rows,key)].map(([k,g])=>({key:k,label:label(g[0]),n:g.length,accuracy:rate(g.map(r=>r.primary_correct)),anomaly:rate(g.map(r=>r.anomaly_correct)),joint:rate(g.map(r=>r.joint_correct)),exact:rate(g.map(r=>r.exact_correct)),error:mean(g.map(r=>r.error_value)),time:median(g.map(r=>r.response_time_s))}))}
+function renderOverview(o,l){els.overview.replaceChildren();const p=section("Panoramica completa");const addresses=new Set([...o.map(r=>r.address),...l.map(r=>r.address)].filter(Boolean));p.appendChild(metricGrid([{label:"Partecipanti",value:String(addresses.size)},{label:"Prove oggettive",value:String(o.length)},{label:"Risposte Likert",value:String(l.length)},{label:"Run",value:String(new Set([...o,...l].map(r=>r.run_id).filter(Boolean)).size)},{label:"Accuratezza primaria",value:pct(rate(o.map(r=>r.primary_correct)))},{label:"Tempo mediano",value:sec(median(o.map(r=>r.response_time_s)))}]));
+ const summary=summarize(o,r=>r.test_id,r=>r.test_label).sort((a,b)=>a.label.localeCompare(b.label,"it"));const s=section("Risultati per test");s.classList.add("section-gap");s.appendChild(bars(summary,r=>r.label,r=>r.accuracy));s.appendChild(table([{label:"Test",value:"label"},{label:"Record",value:"n",align:"right"},{label:"Accuratezza",value:"accuracy",format:pct,align:"right"},{label:"Esatte",value:"exact",format:pct,align:"right"},{label:"Errore medio",value:"error",format:v=>num(v,2),align:"right"},{label:"Tempo mediano",value:"time",format:sec,align:"right"}],summary));
+ const cov=section("Copertura dei partecipanti");cov.classList.add("section-gap");const tests=uniq([...o,...l].map(r=>r.test_id)),addrs=uniq([...o,...l].map(r=>r.address));const grid=ce("div","coverage-grid");["Test",...addrs.map(shortAddress)].forEach(x=>grid.appendChild(ce("div","head",x)));tests.forEach(t=>{grid.appendChild(ce("div",null,TEST_LABELS[t]||t));addrs.forEach(a=>{const c=o.filter(r=>r.test_id===t&&r.address===a).length+l.filter(r=>r.test_id===t&&r.address===a).length;grid.appendChild(ce("div",null,String(c)))})});cov.appendChild(grid);els.overview.append(p,s,cov)}
+function detailsFor(title,rows,columns){if(!rows.length)return null;const p=section(title);p.classList.add("section-gap");p.appendChild(table(columns,rows));return p}
+function renderDetails(o){els.details.replaceChildren();const intro=section("Dettaglio di tutti i formati");intro.appendChild(ce("div","notice","Ogni schema mantiene i propri campi. Le tabelle seguenti non riducono i test a una sola metrica comune."));els.details.appendChild(intro);
+ const sets={c11:o.filter(r=>r.test_id==="cat1-test-1-1"),c12:o.filter(r=>r.test_id==="cat1-test-1-2"),c2:o.filter(r=>r.test_id==="cat2-composition"),c31:o.filter(r=>r.test_id==="cat3-test-3-1"),c32:o.filter(r=>r.test_id==="cat3-test-3-2"),c4:o.filter(r=>r.test_id==="cat4-temporal")};
+ const common=[{label:"Address",value:r=>r.address_short},{label:"Trial",value:"trial_index",align:"right"},{label:"Grafico",value:r=>r.graph_label||r.graph},{label:"Tempo",value:"response_time_s",format:sec,align:"right"}];
+ const panels=[
+ detailsFor("Categoria 1 · Test 1.1",sets.c11,[...common,{label:"Stimolo",value:"stimulus_value",align:"right"},{label:"Atteso",value:"expected_label"},{label:"Scelto",value:"selected_label"},{label:"Corretto",value:r=>r.primary_correct===true?"Sì":r.primary_correct===false?"No":"—"}]),
+ detailsFor("Categoria 1 · Test 1.2",sets.c12,[...common,{label:"Atteso",value:"expected_value",align:"right"},{label:"Scelto",value:"selected_value",align:"right"},{label:"Errore assoluto",value:"absolute_error",align:"right"},{label:"Valore esatto",value:r=>r.exact_correct===true?"Sì":r.exact_correct===false?"No":"—"},{label:"Etichetta attesa",value:"expected_label"},{label:"Etichetta scelta",value:"selected_label"}]),
+ detailsFor("Categoria 2 · Composizione",sets.c2,[...common,{label:"Dominante atteso",value:"expected_dominant"},{label:"Dominante scelto",value:"selected_dominant"},{label:"% reali N/Neu/P",value:r=>`${r.negative_percent}/${r.neutral_percent}/${r.positive_percent}`},{label:"% stimate N/Neu/P",value:r=>`${r.estimated_negative_percent}/${r.estimated_neutral_percent}/${r.estimated_positive_percent}`},{label:"Totale stimato",value:"estimated_total_percent",align:"right"},{label:"Errori N/Neu/P",value:r=>`${r.absolute_error_negative}/${r.absolute_error_neutral}/${r.absolute_error_positive}`},{label:"MAE",value:"mean_absolute_percentage_error",align:"right"},{label:"Tempo risposta UI",value:"answer_time_s",format:sec,align:"right"}]),
+ detailsFor("Categoria 3 · Test 3.1",sets.c31,[...common,{label:"Atteso",value:"expected_value",align:"right"},{label:"Scelto",value:"selected_value",align:"right"},{label:"Errore assoluto",value:"absolute_error",align:"right"},{label:"Errore firmato",value:"signed_error",align:"right"},{label:"Esatto",value:r=>r.exact_correct===true?"Sì":r.exact_correct===false?"No":"—"}]),
+ detailsFor("Categoria 3 · Test 3.2",sets.c32,[...common,{label:"Sinistra",value:r=>`${r.left_graph_label||r.left_graph}: ${r.left_value}`},{label:"Destra",value:r=>`${r.right_graph_label||r.right_graph}: ${r.right_value}`},{label:"Scelta attesa",value:"expected_choice"},{label:"Scelta",value:"selected_choice"},{label:"Corretta",value:r=>r.is_choice_correct===true?"Sì":r.is_choice_correct===false?"No":"—"},{label:"Distanza attesa",value:"expected_distance",align:"right"},{label:"Distanza scelta",value:"selected_distance",align:"right"},{label:"Errore distanza",value:"distance_absolute_error",align:"right"},{label:"Errore firmato",value:"distance_signed_error",align:"right"}]),
+ detailsFor("Categoria 4 · Temporale",sets.c4,[...common,{label:"Scenario",value:r=>r.scenario_label||r.scenario_id},{label:"Trend atteso",value:"expected_trend"},{label:"Trend scelto",value:"selected_trend"},{label:"Trend corretto",value:r=>r.primary_correct===true?"Sì":r.primary_correct===false?"No":"—"},{label:"Anomalia attesa",value:"expected_anomaly"},{label:"Anomalia scelta",value:"selected_anomaly"},{label:"Anomalia corretta",value:r=>r.anomaly_correct===true?"Sì":r.anomaly_correct===false?"No":"—"},{label:"Congiunta",value:r=>r.joint_correct===true?"Sì":r.joint_correct===false?"No":"—"}])];panels.filter(Boolean).forEach(p=>els.details.appendChild(p));if(!panels.some(Boolean))els.details.appendChild(empty("Nessun record intra-classe corrisponde ai filtri."))}
+function renderInter(o){els.interclass.replaceChildren();const rows=o.filter(r=>r.test_family==="Inter-classe");const p=section("Test inter-classe");if(!rows.length){p.appendChild(empty("Nessun record inter-classe."));els.interclass.appendChild(p);return}p.appendChild(metricGrid([{label:"Prove",value:String(rows.length)},{label:"Scenario corretto",value:pct(rate(rows.map(r=>r.primary_correct)))},{label:"Anomalia corretta",value:pct(rate(rows.map(r=>r.anomaly_correct)))},{label:"Correttezza congiunta",value:pct(rate(rows.map(r=>r.joint_correct)))},{label:"Tempo risposta",value:sec(median(rows.map(r=>r.response_time_s)))},{label:"Osservazione",value:sec(median(rows.map(r=>r.observation_time_s)))}]));const summary=summarize(rows,r=>`${r.test_number}|${r.variant}`,r=>`Test ${r.test_number} · ${r.variant}`);const s=section("Confronto A/B");s.classList.add("section-gap");s.appendChild(bars(summary,r=>r.label,r=>r.joint));s.appendChild(table([{label:"Caso",value:"label"},{label:"Record",value:"n",align:"right"},{label:"Scenario",value:"accuracy",format:pct,align:"right"},{label:"Anomalia",value:"anomaly",format:pct,align:"right"},{label:"Congiunta",value:"joint",format:pct,align:"right"},{label:"Tempo",value:"time",format:sec,align:"right"}],summary));const d=section("Risposte inter-classe");d.classList.add("section-gap");d.appendChild(table([{label:"Address",value:r=>r.address_short},{label:"Test",value:r=>`T${r.test_number}${r.variant}`},{label:"Grafici",value:"graph"},{label:"Scenario",value:r=>r.scenario_label||r.scenario_id},{label:"Atteso",value:"expected_answer"},{label:"Scelto",value:"selected_answer"},{label:"Anomalia attesa",value:"expected_anomaly"},{label:"Anomalia scelta",value:"selected_anomaly"},{label:"Congiunta",value:r=>r.joint_correct===true?"Sì":r.joint_correct===false?"No":"—"},{label:"Punti",value:"total_points",align:"right"},{label:"Osservazione",value:"observation_time_s",format:sec,align:"right"},{label:"Risposta",value:"response_time_s",format:sec,align:"right"}],rows));els.interclass.append(p,s,d)}
+function renderLikert(rows){els.likert.replaceChildren();const p=section("Likert per variante e comparativi");if(!rows.length){p.appendChild(empty("Nessuna risposta Likert."));els.likert.appendChild(p);return}p.appendChild(metricGrid([{label:"Risposte",value:String(rows.length)},{label:"Partecipanti",value:String(new Set(rows.map(r=>r.address)).size)},{label:"Media",value:num(mean(rows.map(r=>r.answer)),2)},{label:"Variante",value:String(rows.filter(r=>r.likert_mode==="variant").length)},{label:"Comparative",value:String(rows.filter(r=>r.likert_mode==="comparative").length)},{label:"Tempo mediano",value:sec(median(rows.map(r=>r.response_time_s)))}]));const summary=[...group(rows,r=>`${r.likert_mode}|${r.test_number}|${r.variant||""}|${r.question_code}`)].map(([k,g])=>({mode:g[0].likert_mode,label:`${g[0].question_code} · T${g[0].test_number||"?"}${g[0].variant||""}`,question:g[0].question_text,average:mean(g.map(r=>r.answer)),responses:g.length,prefA:rate(g.map(r=>r.preference==="A"?true:r.preference?false:null)),prefB:rate(g.map(r=>r.preference==="B"?true:r.preference?false:null)),a:g[0].variant_a_graphs,b:g[0].variant_b_graphs}));const s=section("Media per domanda");s.classList.add("section-gap");s.appendChild(bars(summary,r=>r.label,r=>r.average,5,v=>num(v,2)));s.appendChild(table([{label:"Tipo",value:"mode"},{label:"Codice",value:"label"},{label:"Domanda",value:"question"},{label:"Media",value:"average",format:v=>num(v,2),align:"right"},{label:"Preferenza A",value:"prefA",format:pct,align:"right"},{label:"Preferenza B",value:"prefB",format:pct,align:"right"},{label:"Risposte",value:"responses",align:"right"}],summary));const d=section("Risposte individuali Likert");d.classList.add("section-gap");d.appendChild(table([{label:"Address",value:r=>r.address_short},{label:"Tipo",value:"likert_mode"},{label:"Test",value:"test_label"},{label:"Variante",value:"variant"},{label:"Codice",value:"question_code"},{label:"Domanda",value:"question_text"},{label:"Risposta",value:"answer",align:"right"},{label:"Preferenza",value:"preference"},{label:"Grafici A",value:"variant_a_graphs"},{label:"Grafici B",value:"variant_b_graphs"}],rows));els.likert.append(p,s,d)}
+function seriesValues(p){if(p.series_values&&p.series_values.length)return p.series_values;if(p.series_data&&p.series_data.length)return p.series_data.map(x=>n(x.value)).filter(Number.isFinite);return[]}
+function spark(values){const wrap=ce("div","spark-wrap");if(!values.length){wrap.appendChild(empty("Questo trial plan non contiene una serie temporale."));return wrap}const w=900,h=220,pad=24,min=Math.min(...values),max=Math.max(...values),range=max-min||1;const pts=values.map((v,i)=>`${pad+i/(Math.max(1,values.length-1))*(w-2*pad)},${h-pad-(v-min)/range*(h-2*pad)}`).join(" ");const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("viewBox",`0 0 ${w} ${h}`);svg.setAttribute("class","spark-svg");const line=document.createElementNS(svg.namespaceURI,"polyline");line.setAttribute("points",pts);line.setAttribute("fill","none");line.setAttribute("stroke","currentColor");line.setAttribute("stroke-width","2");svg.appendChild(line);wrap.appendChild(svg);wrap.appendChild(ce("div","mini-note",`${values.length} punti · minimo ${num(min,1)} · massimo ${num(max,1)} · media ${num(mean(values),2)}`));return wrap}
+function renderPlans(rows){els.plans.replaceChildren();const p=section("Trial plan e stimoli");if(!state.plans.length){p.appendChild(ce("div","notice warn","Non hai caricato trial plan. responses.jsonl è sufficiente per analizzare le risposte, ma non contiene le serie complete e tutti gli stimoli originari."));els.plans.appendChild(p);return}p.appendChild(metricGrid([{label:"Piani",value:String(state.plans.length)},{label:"Trial pianificati",value:String(state.planTrials.length)},{label:"Trial filtrati",value:String(rows.length)},{label:"Risposte collegate",value:String(state.objective.filter(r=>r.plan_linked).length)},{label:"Serie temporali",value:String(state.planTrials.filter(p=>seriesValues(p).length).length)},{label:"Run con piano",value:String(new Set(state.plans.map(r=>r.run_id)).size)}]));const d=section("Trial pianificati");d.classList.add("section-gap");d.appendChild(table([{label:"Address",value:r=>r.address_short},{label:"Test",value:"test_label"},{label:"Run",value:"run_id"},{label:"Trial",value:"trial_index",align:"right"},{label:"Tipo",value:"kind"},{label:"Grafico",value:r=>r.graph_label||r.graph||r.graph_combination},{label:"Scenario",value:r=>r.scenario_label||r.scenario_id},{label:"Valore",value:"stimulus_value",align:"right"},{label:"Atteso",value:r=>r.expected_label||r.expected_dominant||r.expected_choice||r.expected_trend||r.expected_answer||r.expected_value},{label:"Anomalia",value:"expected_anomaly"},{label:"Punti",value:r=>seriesValues(r).length||r.total_points,align:"right"}],rows));els.plans.append(p,d);const withSeries=rows.find(r=>seriesValues(r).length);if(withSeries){const s=section(`Anteprima serie · ${withSeries.test_label} · trial ${withSeries.trial_index}`);s.classList.add("section-gap");s.appendChild(spark(seriesValues(withSeries)));els.plans.appendChild(s)}const raw=section("Piani completi");raw.classList.add("section-gap");state.plans.slice(0,50).forEach(r=>{const det=ce("details","raw-card"),sum=ce("summary",null,`${r.test_label} · ${shortAddress(r.address)} · ${r.run_id}`),pre=ce("pre");pre.textContent=JSON.stringify(r.raw_record,null,2);det.append(sum,pre);raw.appendChild(det)});els.plans.appendChild(raw)}
+function renderParticipants(o,l){els.participants.replaceChildren();const p=section("Partecipanti");const addrs=uniq([...o,...l].map(r=>r.address));if(!addrs.length){p.appendChild(empty("Nessun partecipante."));els.participants.appendChild(p);return}const rows=addrs.map(a=>{const x=o.filter(r=>r.address===a),q=l.filter(r=>r.address===a);return{address:a,short:shortAddress(a),records:x.length,tests:new Set([...x,...q].map(r=>r.test_id)).size,runs:new Set([...x,...q].map(r=>r.run_id)).size,accuracy:rate(x.map(r=>r.primary_correct)),joint:rate(x.map(r=>r.joint_correct)),time:median(x.map(r=>r.response_time_s)),likert:mean(q.map(r=>r.answer))}});p.appendChild(metricGrid([{label:"Partecipanti",value:String(rows.length)},{label:"Record medi",value:num(mean(rows.map(r=>r.records)),1)},{label:"Test medi",value:num(mean(rows.map(r=>r.tests)),1)},{label:"Accuratezza media",value:pct(mean(rows.map(r=>r.accuracy)))},{label:"Tempo mediano",value:sec(median(o.map(r=>r.response_time_s)))},{label:"Likert medio",value:num(mean(l.map(r=>r.answer)),2)}]));const d=section("Riepilogo individuale");d.classList.add("section-gap");d.appendChild(table([{label:"Address",value:"short"},{label:"Record",value:"records",align:"right"},{label:"Test",value:"tests",align:"right"},{label:"Run",value:"runs",align:"right"},{label:"Accuratezza",value:"accuracy",format:pct,align:"right"},{label:"Congiunta",value:"joint",format:pct,align:"right"},{label:"Tempo mediano",value:"time",format:sec,align:"right"},{label:"Likert medio",value:"likert",format:v=>num(v,2),align:"right"}],rows));els.participants.append(p,d)}
+function flatten(obj,prefix="",out={}){Object.entries(obj||{}).forEach(([k,v])=>{const key=prefix?`${prefix}.${k}`:k;if(v&&typeof v==="object"&&!Array.isArray(v))flatten(v,key,out);else out[key]=Array.isArray(v)?JSON.stringify(v):v});return out}
+function csvEscape(v){if(v===null||v===undefined)return"";const s=typeof v==="object"?JSON.stringify(v):String(v);return/[";,\n\r]/.test(s)?`"${s.replace(/"/g,'""')}"`:s}
+function download(name,content,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function csv(name,rows){if(!rows.length)return;const flat=rows.map(r=>{const c={...r};delete c.raw_record;delete c.plan_trial;delete c.raw_trial;return flatten(c)});const keys=uniq(flat.flatMap(Object.keys));download(name,[keys.join(";"),...flat.map(r=>keys.map(k=>csvEscape(r[k])).join(";"))].join("\n"),"text/csv;charset=utf-8")}
+function renderQuality(o,l){els.quality.replaceChildren();const p=section("Qualità dei dati ed export");const inconsistent=o.filter(r=>r.reported_consistent===false),badTotals=o.filter(r=>r.test_id==="cat2-composition"&&Number.isFinite(r.estimated_total_percent)&&r.estimated_total_percent!==100),missing=o.filter(r=>!r.address||!r.run_id||!r.test_id),runs=[...group(o.filter(r=>r.run_id),r=>r.run_id)].map(([id,g])=>{const exp=Math.max(...g.map(r=>n(r.total_trials)).filter(Number.isFinite),g.length),obs=new Set(g.map(r=>r.trial_index)).size;return{id,address:g[0].address_short,test:g[0].test_label,expected:exp,observed:obs,complete:exp===obs}}),incomplete=runs.filter(r=>!r.complete);p.appendChild(metricGrid([{label:"Errori file",value:String(state.report.sourceErrors.length)},{label:"Record sconosciuti",value:String(state.unknown.length)},{label:"Duplicati",value:String(state.report.duplicateObjectiveRows+state.report.duplicateLikertRows+state.report.duplicatePlanRows)},{label:"isCorrect incoerenti",value:String(inconsistent.length)},{label:"Totali % ≠ 100",value:String(badTotals.length)},{label:"Run incomplete",value:String(incomplete.length)}]));if(!state.plans.length)p.appendChild(ce("div","notice warn","Le risposte sono analizzabili, ma per ricostruire integralmente gli stimoli carica anche trial-plans.jsonl."));const ex=ce("div","export-actions section-gap");[["Risposte oggettive CSV",()=>csv("risposte_oggettive_complete.csv",state.objective),state.objective.length],["Likert CSV",()=>csv("likert_completo.csv",state.likert),state.likert.length],["Trial plan CSV",()=>csv("trial_plan_completi.csv",state.planTrials),state.planTrials.length],["Dati grezzi JSONL",()=>download("dati_grezzi.jsonl",state.raw.map(r=>JSON.stringify(r.record)).join("\n"),"application/x-ndjson"),state.raw.length]].forEach(([label,fn,count],i)=>{const btn=ce("button",`button ${i===0?"primary":""}`,`${label} (${count})`);btn.disabled=!count;btn.onclick=fn;ex.appendChild(btn)});p.appendChild(ex);const d=section("Diagnostica");d.classList.add("section-gap");d.appendChild(table([{label:"Problema",value:"type"},{label:"Conteggio",value:"count",align:"right"}], [{type:"Campi chiave mancanti",count:missing.length},{type:"isCorrect non coerente con campi specifici",count:inconsistent.length},{type:"Stime composizione con totale diverso da 100",count:badTotals.length},{type:"Run incomplete",count:incomplete.length},{type:"Record non riconosciuti ma conservati",count:state.unknown.length}]));if(incomplete.length)d.appendChild(table([{label:"Run",value:"id"},{label:"Address",value:"address"},{label:"Test",value:"test"},{label:"Attesi",value:"expected",align:"right"},{label:"Osservati",value:"observed",align:"right"}],incomplete));els.quality.append(p,d)}
+function renderRaw(rows){els.raw.replaceChildren();const p=section("Archivio grezzo completo");p.appendChild(ce("div","notice","Ogni oggetto originale viene conservato senza eliminare campi, inclusi record sconosciuti e trial plan."));p.appendChild(metricGrid([{label:"Record filtrati",value:String(rows.length)},{label:"Record totali",value:String(state.raw.length)},{label:"Tipi rilevati",value:String(new Set(state.raw.map(r=>r.record_kind)).size)},{label:"Campi distinti",value:String(new Set(state.raw.flatMap(r=>Object.keys(r.record))).size)},{label:"Sconosciuti",value:String(state.unknown.length)},{label:"File",value:String(state.report.sourceFiles)}]));rows.slice(0,200).forEach((r,i)=>{const det=ce("details","raw-card"),sum=ce("summary",null,`${i+1}. ${r.record_kind} · ${TEST_LABELS[r.test_id]||r.test_id||"senza testId"} · ${shortAddress(r.address)} · ${r.source_file}`),pre=ce("pre");pre.textContent=JSON.stringify(r.record,null,2);det.append(sum,pre);p.appendChild(det)});if(rows.length>200)p.appendChild(ce("p","helper",`Mostrati 200 record su ${rows.length}; usa l'export JSONL per ottenere tutto.`));els.raw.appendChild(p)}
+function updateStatus(){els.statusFiles.textContent=state.report.sourceFiles;els.statusRaw.textContent=state.raw.length;els.statusObjective.textContent=state.objective.length;els.statusLikert.textContent=state.likert.length;els.statusPlans.textContent=state.plans.length;els.statusDuplicates.textContent=state.report.duplicateObjectiveRows+state.report.duplicateLikertRows+state.report.duplicatePlanRows;els.statusErrors.textContent=state.report.sourceErrors.length;els.loadMessage.textContent=!state.files.length?"Nessun dato caricato.":`${state.objective.length} prove, ${state.likert.length} risposte Likert, ${state.plans.length} trial plan.`;els.fileList.replaceChildren();state.files.forEach(f=>{const r=ce("div","file-row");r.append(ce("span",null,f.webkitRelativePath||f.name),ce("span","file-size",`${(f.size/1024).toFixed(1)} KB`));els.fileList.appendChild(r)});els.clearData.disabled=!state.files.length}
+function renderAll(){updateStatus();populateFilters();const has=state.raw.length>0;els.filterPanel.hidden=!has;els.tabs.hidden=!has;els.emptyState.hidden=has;els.dashboard.hidden=!has;if(!has)return;const f=filters();renderOverview(f.objective,f.likert);renderDetails(f.objective);renderInter(f.objective);renderLikert(f.likert);renderPlans(f.plans);renderParticipants(f.objective,f.likert);renderQuality(f.objective,f.likert);renderRaw(f.raw)}
+function activate(name){state.activeTab=name;document.querySelectorAll(".tab-button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));document.querySelectorAll(".tab-view").forEach(v=>v.classList.toggle("active",v.id===name))}
+els.chooseFiles.onclick=()=>els.fileInput.click();els.chooseFolder.onclick=()=>els.folderInput.click();els.clearData.onclick=reset;els.fileInput.onchange=e=>loadFiles(e.target.files);els.folderInput.onchange=e=>loadFiles(e.target.files);[els.filterAddress,els.filterFamily,els.filterTest,els.filterVariant,els.filterGraph].forEach(e=>e.onchange=renderAll);els.tabs.onclick=e=>{const b=e.target.closest("button[data-tab]");if(b)activate(b.dataset.tab)};["dragenter","dragover"].forEach(ev=>els.dropZone.addEventListener(ev,e=>{e.preventDefault();els.dropZone.classList.add("dragging")}));["dragleave","drop"].forEach(ev=>els.dropZone.addEventListener(ev,e=>{e.preventDefault();els.dropZone.classList.remove("dragging")}));els.dropZone.addEventListener("drop",e=>loadFiles(e.dataTransfer.files));renderAll();
+</script>
+</body>
+
+</html>

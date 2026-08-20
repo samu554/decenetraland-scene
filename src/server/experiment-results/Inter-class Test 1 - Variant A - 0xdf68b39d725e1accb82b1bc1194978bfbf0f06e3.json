@@ -1,0 +1,78 @@
+[
+  {
+    "runId": "inter-test-1-a_1786713768216_0xdf68b39d72",
+    "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+    "testId": "inter-test-1-a",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "1A",
+    "graphCombination": [
+      "sentiment-image",
+      "bar-chart"
+    ],
+    "scenarioId": "polarized_with_anomaly",
+    "scenarioLabel": "Polarized - with anomaly",
+    "expectedAnswer": "polarized",
+    "selectedAnswer": "stable-positive",
+    "isScenarioCorrect": false,
+    "expectedAnomaly": "middle",
+    "selectedAnomaly": "middle",
+    "isAnomalyCorrect": true,
+    "anomalyDescription": "A short unusually positive consensus appears in the middle of an otherwise polarized conversation.",
+    "isCorrect": true,
+    "accuracyType": "wrong",
+    "playbackStartedAtClientMs": 1786713774167,
+    "answerShownAtClientMs": 1786713814417,
+    "answeredAtClientMs": 1786713849589,
+    "observationTimeMs": 40250,
+    "responseTimeMs": 35172,
+    "totalPoints": 80,
+    "createdAtClient": "2026-08-14T13:24:09.590Z",
+    "createdAtServer": "2026-08-14T13:24:10.663Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-1-a_1786713768216_0xdf68b39d72",
+    "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+    "testId": "inter-test-1-a",
+    "testNumber": 1,
+    "variant": "A",
+    "caseId": "1A",
+    "graphCombination": [
+      "sentiment-image",
+      "bar-chart"
+    ],
+    "scenarioId": "polarized_with_anomaly",
+    "scenarioLabel": "Polarized - with anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T1-A1",
+        "text": "I clearly understood the current sentiment value."
+      },
+      {
+        "code": "T1-A2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T1-A3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T1-A1": 5,
+      "T1-A2": 5,
+      "T1-A3": 3
+    },
+    "startedAtClientMs": 1786713849590,
+    "answeredAtClientMs": 1786713867257,
+    "responseTimeMs": 17667,
+    "createdAtClient": "2026-08-14T13:24:27.257Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-14T13:24:28.348Z"
+  }
+]

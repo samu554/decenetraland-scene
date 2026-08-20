@@ -1,0 +1,78 @@
+[
+  {
+    "runId": "inter-test-2-b_1786714517131_0xdf68b39d72",
+    "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+    "testId": "inter-test-2-b",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "caseId": "2B",
+    "graphCombination": [
+      "tricolor-donut",
+      "bar-chart"
+    ],
+    "scenarioId": "gradual_improvement_no_anomaly",
+    "scenarioLabel": "Gradual improvement - no anomaly",
+    "expectedAnswer": "gradual-improvement",
+    "selectedAnswer": "gradual-improvement",
+    "isScenarioCorrect": true,
+    "expectedAnomaly": "none",
+    "selectedAnomaly": "none",
+    "isAnomalyCorrect": true,
+    "anomalyDescription": "No isolated anomaly; the relevant pattern is gradual improvement with normal fluctuations.",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "playbackStartedAtClientMs": 1786714519588,
+    "answerShownAtClientMs": 1786714560184,
+    "answeredAtClientMs": 1786714606980,
+    "observationTimeMs": 40596,
+    "responseTimeMs": 46796,
+    "totalPoints": 80,
+    "createdAtClient": "2026-08-14T13:36:46.980Z",
+    "createdAtServer": "2026-08-14T13:36:48.051Z"
+  },
+  {
+    "responseType": "inter-class-likert-variant",
+    "runId": "inter-test-2-b_1786714517131_0xdf68b39d72",
+    "address": "0xdf68b39d725e1accb82b1bc1194978bfbf0f06e3",
+    "testId": "inter-test-2-b",
+    "testNumber": 2,
+    "variant": "B",
+    "caseId": "2B",
+    "graphCombination": [
+      "tricolor-donut",
+      "bar-chart"
+    ],
+    "scenarioId": "gradual_improvement_no_anomaly",
+    "scenarioLabel": "Gradual improvement - no anomaly",
+    "trialIndex": 1,
+    "totalTrials": 1,
+    "likertMode": "variant",
+    "scaleDescription": "1 = Strongly disagree, 5 = Strongly agree.",
+    "questions": [
+      {
+        "code": "T2-B1",
+        "text": "I clearly understood the composition of positive, neutral, and negative messages."
+      },
+      {
+        "code": "T2-B2",
+        "text": "The visualizations were easy to read in the 3D virtual environment."
+      },
+      {
+        "code": "T2-B3",
+        "text": "I felt confident in my answer about the conversation trend."
+      }
+    ],
+    "answers": {
+      "T2-B1": 2,
+      "T2-B2": 2,
+      "T2-B3": 1
+    },
+    "startedAtClientMs": 1786714606980,
+    "answeredAtClientMs": 1786714619215,
+    "responseTimeMs": 12235,
+    "createdAtClient": "2026-08-14T13:36:59.215Z",
+    "isCorrect": true,
+    "accuracyType": "correct",
+    "createdAtServer": "2026-08-14T13:37:00.295Z"
+  }
+]
