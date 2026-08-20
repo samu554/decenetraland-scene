@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "src/rolling_audio_module",
+    "src/rolling_audio_module/**/*"
+  ],
+  "extends": "@dcl/sdk/types/tsconfig.ecs7.json"
+}
